@@ -8,20 +8,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import lab3.model.AdjacentMatrix;
+import lab3.model.Algorithm;
 import lab3.model.Graph;
 
 
 public class Main {
 
-	public static void main(String[] args){
-		test();
+	public static void main(String[] args) throws InterruptedException {
+		// test();
+		compute();
 	}
 
 	public static void printHeapInfo() {
@@ -62,9 +65,12 @@ public class Main {
 	public static void compute() throws InterruptedException {
 		int minutes = 1;
 		// fetch files
-		try (Stream<Path> walk = Files.walk(Paths.get("mincut_dataset"))) {
+		try  {
+			Stream<Path> walk = Files.walk(Paths.get("mincut_dataset"));
 			List<String> input_dataset = walk.filter(Files::isRegularFile).map(x -> x.toString())
 					.filter(x -> x.contains("input")).sorted().collect(Collectors.toList());
+			walk.close();
+			walk = Files.walk(Paths.get("mincut_dataset"));
 			List<Integer> output_dataset = walk.filter(Files::isRegularFile).map(x -> x.toString())
 					.filter(x -> x.contains("output")).map(x -> {
 						String file = x.toString();
@@ -80,8 +86,9 @@ public class Main {
 						}
 						return -1;
 					}).sorted().collect(Collectors.toList());
+			walk.close();
 
-			HashMap<String, Integer> mincut_dataset = new HashMap<String, Integer>(input_dataset.size());
+			Map<String, Integer> mincut_dataset = new TreeMap<String, Integer>();
 			for(int i = 0; i < input_dataset.size(); i++)
 				mincut_dataset.put(input_dataset.get(i), output_dataset.get(i));
 
@@ -90,7 +97,6 @@ public class Main {
 			fw.write("Size Dataset\tSolution\tTime(s)\tError(%)\n");
 
 			mincut_dataset.forEach((in, out) -> {
-				System.out.println(in.toString());
 				try{
 					System.out.println("Input: " + in);
 					int cost = 0;
@@ -118,12 +124,12 @@ public class Main {
 						G.addAdjacentsNodes(nodes.get(i), adjacentNodes.get(i));
 					}
 
-					double k = Math.pow(nodes.size(), 2)/2*Math.log(nodes.size());
+					int k = (int) Math.round(Math.pow(nodes.size(), 2)/2*Math.log(nodes.size()));
 
 					long start = System.nanoTime();
 					long stop = 0;
 
-					// cost = Algorithm.Karger(G, k);
+					cost = Algorithm.Karger(G, k);
 
 					if(stop == 0)
 						stop = System.nanoTime();
@@ -322,6 +328,8 @@ public class Main {
 
 		System.out.println(test.getAdjacentMatrix()+"\n");
 		System.out.println(AdjacentMatrix.copy(test.getAdjacentMatrix()));
-		System.out.println(test.contraction(1,4).getAdjacentMatrix());
+		Graph test1 = test.contraction(1,4);
+		System.out.println(test1.getAdjacentMatrix());
+		System.out.println(test1.getNumberOfEdges());
 	}
 }
