@@ -1,14 +1,12 @@
 package lab3.model;
 
-public class Edge implements Comparable<Edge>{
+public class Edge {
     private Integer nodeA;
     private Integer nodeB;
-    private Integer weight;
 
-    public Edge(Integer nodeA, Integer nodeB, Integer weight) {
+    public Edge(Integer nodeA, Integer nodeB) {
         this.nodeA = nodeA;
         this.nodeB = nodeB;
-        this.weight = weight;
     }
 
     public Integer getNodeA() {
@@ -25,23 +23,6 @@ public class Edge implements Comparable<Edge>{
 
     public void setNodeB(Integer nodeB) {
         this.nodeB = nodeB;
-    }
-
-    public Integer getWeight() {
-        return this.weight;
-    }
-
-    public void setWeight(Integer weight) {
-        this.weight = weight;
-    }
-
-    @Override
-    public int compareTo(Edge e){
-        if(weight > e.weight)
-			return 1;
-		else if(weight == e.weight)
-			return 0;
-		return -1;
     }
 
     @Override

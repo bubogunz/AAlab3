@@ -1,33 +1,39 @@
 package lab3.main;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Main {
 	public static void main(String[] args) throws InterruptedException {
-		//dare l'opzione -Xmx8192m per dire alla JVM di riservare 8GB di RAM (serve a HeldKarp) 
+		// dare l'opzione -Xmx8192m per dire alla JVM di riservare 8GB di RAM (serve a
+		// HeldKarp)
 		// printHeapInfo();
 
-		compute("Karger"); 
+		compute("Karger");
 		// test();
 	}
 
 	public static void printHeapInfo() {
 
-		long heapSize = Runtime.getRuntime().totalMemory(); 
+		long heapSize = Runtime.getRuntime().totalMemory();
 
-		// Get maximum size of heap in bytes. The heap cannot grow beyond this size.// Any attempt will result in an OutOfMemoryException.
+		// Get maximum size of heap in bytes. The heap cannot grow beyond this size.//
+		// Any attempt will result in an OutOfMemoryException.
 		long heapMaxSize = Runtime.getRuntime().maxMemory();
 
-		// Get amount of free memory within the heap in bytes. This size will increase // after garbage collection and decrease as new objects are created.
-		long heapFreeSize = Runtime.getRuntime().freeMemory(); 
+		// Get amount of free memory within the heap in bytes. This size will increase
+		// // after garbage collection and decrease as new objects are created.
+		long heapFreeSize = Runtime.getRuntime().freeMemory();
 
 		System.out.println("heapsize " + formatSize(heapSize));
 		System.out.println("heapmaxsize " + formatSize(heapMaxSize));
@@ -36,26 +42,48 @@ public class Main {
 	}
 
 	public static String formatSize(long v) {
-		if (v < 1024) return v + " B";
+		if (v < 1024)
+			return v + " B";
 		int z = (63 - Long.numberOfLeadingZeros(v)) / 10;
-		return String.format("%.1f %sB", (double)v / (1L << (z*10)), " KMGTPE".charAt(z));
+		return String.format("%.1f %sB", (double) v / (1L << (z * 10)), " KMGTPE".charAt(z));
 	}
 
 	/**
-	 * @param algorithm = the algorithm to compute. This would be the Karger-Stein algorithm
-	 * to calculate the minimum cut of a multigraph
+	 * @param algorithm = the algorithm to compute. This would be the Karger-Stein
+	 *                  algorithm to calculate the minimum cut of a multigraph
 	 * @throws InterruptedException
 	 * 
-	 * This function executes the algorithm choosen in 68 graphs that are
-	 * builded with mst_dataset folder. The results are stored in a file with the name of
-	 * algorithm choosen. 
+	 *                              This function executes the algorithm choosen in
+	 *                              68 graphs that are builded with mst_dataset
+	 *                              folder. The results are stored in a file with
+	 *                              the name of algorithm choosen.
 	 */
 	public static void compute(String algorithm) throws InterruptedException {
 		int minutes = 1;
 		// fetch files
 		try (Stream<Path> walk = Files.walk(Paths.get("mincut_dataset"))) {
-			List<String> mincut_dataset = walk.filter(Files::isRegularFile).map(x -> x.toString()).sorted()
-					.collect(Collectors.toList());  
+			List<String> input_dataset = walk.filter(Files::isRegularFile).map(x -> x.toString())
+					.filter(x -> x.contains("input")).sorted().collect(Collectors.toList());
+			List<Integer> output_dataset = walk.filter(Files::isRegularFile).map(x -> x.toString())
+					.filter(x -> x.contains("output")).map(x -> {
+						String file = x.toString();
+						File myObj = new File(file);
+						Scanner myReader;
+						try {
+							myReader = new Scanner(myObj);
+							Integer out = Integer.parseInt(myReader.nextLine().split(" ")[0]);
+							myReader.close();
+							return out;
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						}
+						return -1;
+					}).sorted().collect(Collectors.toList());
+
+			HashMap<String, Integer> mincut_dataset = new HashMap<String, Integer>(input_dataset.size());
+			for(int i = 0; i < input_dataset.size(); i++)
+				mincut_dataset.put(input_dataset.get(i), output_dataset.get(i));
+
 			final File outputPath = new File("mincut.txt");
 			FileWriter fw = new FileWriter(outputPath, false);
 			fw.write("Dataset\tSolution\tTime(s)\tError(%)\n");
@@ -64,8 +92,17 @@ public class Main {
 
 			System.out.println("Executing " + algorithm + " algorithm");
 
-			mincut_dataset.stream().forEach(dataset -> {
-				System.out.println(dataset.toString());
+			mincut_dataset.forEach((in, out) -> {
+				System.out.println(in.toString());
+				try{
+					System.out.println("Input: " + in);
+					int cost = 0;
+	
+					File myObj = new File(in);
+					Scanner myReader = new Scanner(myObj);
+					String line = myReader.nextLine();
+					
+				}catch (FileNotFoundException e) {}
 				//				try {
 				//					int example = k;
 				//					String entryset = tsp_dataset.get(example);

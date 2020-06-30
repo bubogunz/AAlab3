@@ -5,21 +5,10 @@ import java.util.Objects;
 
 public class Node {
     private int ID;
-    private Node father;
     private ArrayList<Node> adjacentNodes = new ArrayList<Node>();
 
 
-    public Node(int ID, Node father) {
-        this.ID = ID;
-        this.father = father;
-    }
-    
-
-    public int getID() {
-        return this.ID;
-    }
-
-    public void setID(int ID) {
+    public Node(int ID) {
         this.ID = ID;
     }
 
@@ -29,14 +18,6 @@ public class Node {
 
     public void setAdjacentNodes(ArrayList<Node> adjacentNodes) {
         this.adjacentNodes = adjacentNodes;
-    }
-
-    public Node getFather() {
-        return this.father;
-    }
-
-    public void setFather(Node father) {
-        this.father = father;
     }
 
     public void addAdjacentNode(Node n){
