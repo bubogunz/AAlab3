@@ -18,14 +18,6 @@ import lab3.model.Graph;
 
 
 public class Main {
-	public static void main(String[] args) throws InterruptedException {
-		// dare l'opzione -Xmx8192m per dire alla JVM di riservare 8GB di RAM (serve a
-		// HeldKarp)
-		// printHeapInfo();
-
-		compute("Karger");
-		// test();
-	}
 
 	public static void printHeapInfo() {
 
@@ -62,7 +54,7 @@ public class Main {
 	 *                              folder. The results are stored in a file with
 	 *                              the name of algorithm choosen.
 	 */
-	public static void compute(String algorithm) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException {
 		int minutes = 1;
 		// fetch files
 		try (Stream<Path> walk = Files.walk(Paths.get("mincut_dataset"))) {
@@ -91,10 +83,6 @@ public class Main {
 			final File outputPath = new File("mincut.txt");
 			FileWriter fw = new FileWriter(outputPath, false);
 			fw.write("Size Dataset\tSolution\tTime(s)\tError(%)\n");
-			boolean testResult = true;
-
-
-			System.out.println("Executing " + algorithm + " algorithm");
 
 			mincut_dataset.forEach((in, out) -> {
 				System.out.println(in.toString());
@@ -110,7 +98,7 @@ public class Main {
 					while(myReader.hasNextLine()){
 						String line = myReader.nextLine();
 						String[] values = line.split(" ");
-						nodes.add(Integer.parseInt(values[0]));
+						nodes.add(Integer.parseInt(values[0])-1);
 						ArrayList<Integer> adjacentN = new ArrayList<Integer> ();
 						for(int i = 1; i < values.length; i++){
 							adjacentN.add(Integer.parseInt(values[i]));
@@ -130,7 +118,7 @@ public class Main {
 					long start = System.nanoTime();
 					long stop = 0;
 
-					cost = Algorithm.Karger(G, k);
+					// cost = Algorithm.Karger(G, k);
 
 					if(stop == 0)
 						stop = System.nanoTime();
@@ -139,8 +127,8 @@ public class Main {
 					writeresults(fw, in, cost, time, out);
 					
 				}catch (FileNotFoundException e) {}
+				catch (IOException e) {}
 
-			fw.close();
 				//				try {
 				//					int example = k;
 				//					String entryset = tsp_dataset.get(example);
@@ -271,17 +259,26 @@ public class Main {
 				//					System.out.println("Some tests not passed.");
 				//				System.out.println("Finish!");
 			});
+			fw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
-		static void writeresults(FileWriter fw, String in, int cost, double time, int out) throws IOException {
-			String[] words = in.split("_");
-			int size = Integer.parseInt(words[3]);
-			double error = (cost - out)/out*100;
-			if(cost - out < 0 && size >= 150)
-				error = 0;
 
-			fw.write(size + "\t" + cost + "\t" + time + "\t" + error + "\n");
-		}
+	static void writeresults(FileWriter fw, String in, int cost, double time, int out) throws IOException {
+		String[] words = in.split("_");
+		int size = Integer.parseInt(words[3]);
+		double error = (cost - out)/out*100;
+		if(cost - out < 0)
+			if(size >= 150)
+				error = 0;
+			else{
+				System.out.println("Test FAILED!");
+				return;
+			}
+		
+		System.out.print("Test passed!");
+		fw.write(size + "\t" + cost + "\t" + time + "\t" + error + "\n");
 	}
+}

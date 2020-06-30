@@ -32,15 +32,17 @@ public final class Graph {
 			adjacentMatrix.set(node, nextNode, 1);
 	}
 
-	public void contraction(Integer nodeA, Integer nodeB){
-		for(int i = 0; i < adjacentMatrix.size(); i++){
-			Integer adjacentNode = adjacentMatrix.get(i, nodeB);
+	public Graph contraction(Integer nodeA, Integer nodeB){
+		Graph newGraph = new Graph(this);//O(m)
+		for(int i = 0; i < newGraph.adjacentMatrix.size(); i++){//O(m)
+			Integer adjacentNode = newGraph.adjacentMatrix.get(i, nodeB);
 			if(adjacentNode != 0){
-				adjacentMatrix.increment(i, nodeA);
-				adjacentMatrix.set(i, nodeA, 0);
+				newGraph.adjacentMatrix.increment(i, nodeA);
+				newGraph.adjacentMatrix.set(i, nodeA, 0);
 			}
 		}
-		adjacentMatrix.set(nodeA, nodeB, 0);
+		newGraph.adjacentMatrix.set(nodeA, nodeB, 0);
+		return newGraph;
 	}
 
 	@Override
