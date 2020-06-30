@@ -14,10 +14,15 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import lab3.model.AdjacentMatrix;
 import lab3.model.Graph;
 
 
 public class Main {
+
+	public static void main(String[] args){
+		test();
+	}
 
 	public static void printHeapInfo() {
 
@@ -54,7 +59,7 @@ public class Main {
 	 *                              folder. The results are stored in a file with
 	 *                              the name of algorithm choosen.
 	 */
-	public static void main(String[] args) throws InterruptedException {
+	public static void compute() throws InterruptedException {
 		int minutes = 1;
 		// fetch files
 		try (Stream<Path> walk = Files.walk(Paths.get("mincut_dataset"))) {
@@ -98,10 +103,10 @@ public class Main {
 					while(myReader.hasNextLine()){
 						String line = myReader.nextLine();
 						String[] values = line.split(" ");
-						nodes.add(Integer.parseInt(values[0])-1);
+						nodes.add(Integer.parseInt(values[0]) - 1);
 						ArrayList<Integer> adjacentN = new ArrayList<Integer> ();
 						for(int i = 1; i < values.length; i++){
-							adjacentN.add(Integer.parseInt(values[i]));
+							adjacentN.add(Integer.parseInt(values[i]) - 1);
 						}
 						adjacentNodes.add(adjacentN);
 					}
@@ -280,5 +285,43 @@ public class Main {
 		
 		System.out.print("Test passed!");
 		fw.write(size + "\t" + cost + "\t" + time + "\t" + error + "\n");
+	}
+
+	static void test(){
+		Graph test = new Graph(6);
+		ArrayList<Integer> a = new ArrayList<Integer>();
+		ArrayList<Integer> b = new ArrayList<Integer>();
+		ArrayList<Integer> c = new ArrayList<Integer>();
+		ArrayList<Integer> d = new ArrayList<Integer>();
+		ArrayList<Integer> e = new ArrayList<Integer>();
+		ArrayList<Integer> f = new ArrayList<Integer>();
+		a.add(1);
+		a.add(2);
+		a.add(3);
+		b.add(0);
+		b.add(4);
+		b.add(5);
+		b.add(3);
+		c.add(0);
+		c.add(4);
+		d.add(1);
+		d.add(0);
+		d.add(4);
+		e.add(1);
+		e.add(2);
+		e.add(3);
+		e.add(5);
+		f.add(1);
+		f.add(4);
+		test.addAdjacentsNodes(0, a);
+		test.addAdjacentsNodes(1, b);
+		test.addAdjacentsNodes(2, c);
+		test.addAdjacentsNodes(3, d);
+		test.addAdjacentsNodes(4, e);
+		test.addAdjacentsNodes(5, f);
+
+		System.out.println(test.getAdjacentMatrix()+"\n");
+		System.out.println(AdjacentMatrix.copy(test.getAdjacentMatrix()));
+		System.out.println(test.contraction(1,4).getAdjacentMatrix());
 	}
 }

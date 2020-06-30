@@ -63,11 +63,9 @@ public class AdjacentMatrix{
 
     public static AdjacentMatrix copy(AdjacentMatrix m){
         AdjacentMatrix tmp = new AdjacentMatrix(m.size());
-        for(int i = 0; i < m.size(); i++){
-            ArrayList<Integer> row = new ArrayList<Integer>(i + 1);
-            tmp.matrix.add(row);
-            for(int j = 0; j < i + 1; j++)
-                row.add(m.get(i + 1, j));
+        for(int i = 0; i < m.matrix.size(); i++){
+            for(int j = 0; j < m.matrix.get(i).size(); j++)
+                tmp.matrix.get(i).set(j, m.matrix.get(i).get(j));
         }
         return tmp;
     }

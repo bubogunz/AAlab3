@@ -38,7 +38,7 @@ public final class Graph {
 			Integer adjacentNode = newGraph.adjacentMatrix.get(i, nodeB);
 			if(adjacentNode != 0){
 				newGraph.adjacentMatrix.increment(i, nodeA);
-				newGraph.adjacentMatrix.set(i, nodeA, 0);
+				newGraph.adjacentMatrix.set(i, nodeB, 0);
 			}
 		}
 		newGraph.adjacentMatrix.set(nodeA, nodeB, 0);
