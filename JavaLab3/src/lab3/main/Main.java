@@ -7,11 +7,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import lab3.model.Graph;
+
 
 public class Main {
 	public static void main(String[] args) throws InterruptedException {
@@ -86,7 +90,7 @@ public class Main {
 
 			final File outputPath = new File("mincut.txt");
 			FileWriter fw = new FileWriter(outputPath, false);
-			fw.write("Dataset\tSolution\tTime(s)\tError(%)\n");
+			fw.write("Size Dataset\tSolution\tTime(s)\tError(%)\n");
 			boolean testResult = true;
 
 
@@ -100,9 +104,43 @@ public class Main {
 	
 					File myObj = new File(in);
 					Scanner myReader = new Scanner(myObj);
-					String line = myReader.nextLine();
+					ArrayList<Integer> nodes = new ArrayList<Integer> ();
+					ArrayList<ArrayList<Integer>> adjacentNodes = new ArrayList<ArrayList<Integer>> ();
+					
+					while(myReader.hasNextLine()){
+						String line = myReader.nextLine();
+						String[] values = line.split(" ");
+						nodes.add(Integer.parseInt(values[0]));
+						ArrayList<Integer> adjacentN = new ArrayList<Integer> ();
+						for(int i = 1; i < values.length; i++){
+							adjacentN.add(Integer.parseInt(values[i]));
+						}
+						adjacentNodes.add(adjacentN);
+					}
+
+					myReader.close();
+
+					Graph G = new Graph(nodes.size());
+					for(int i = 0; i < nodes.size(); i++){
+						G.addAdjacentsNodes(nodes.get(i), adjacentNodes.get(i));
+					}
+
+					double k = Math.pow(nodes.size(), 2)/2*Math.log(nodes.size());
+
+					long start = System.nanoTime();
+					long stop = 0;
+
+					cost = Algorithm.Karger(G, k);
+
+					if(stop == 0)
+						stop = System.nanoTime();
+					double time = (stop - start) / 1000000000;
+
+					writeresults(fw, in, cost, time, out);
 					
 				}catch (FileNotFoundException e) {}
+
+			fw.close();
 				//				try {
 				//					int example = k;
 				//					String entryset = tsp_dataset.get(example);
@@ -237,7 +275,13 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
-		static void test(){
-			//		TestKruskal.test();
+		static void writeresults(FileWriter fw, String in, int cost, double time, int out) throws IOException {
+			String[] words = in.split("_");
+			int size = Integer.parseInt(words[3]);
+			double error = (cost - out)/out*100;
+			if(cost - out < 0 && size >= 150)
+				error = 0;
+
+			fw.write(size + "\t" + cost + "\t" + time + "\t" + error + "\n");
 		}
 	}

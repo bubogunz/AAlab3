@@ -12,7 +12,7 @@ public class AdjacentMatrix{
         for(int i=0; i<n; ++i) {
         	ArrayList<Integer> row = new ArrayList<Integer>(n - i);
         	for(int j=0; j<n-i; ++j) 
-        		row.add(null);
+        		row.add(0);
         	
         	matrix.add(row);
         }
@@ -25,6 +25,11 @@ public class AdjacentMatrix{
     		else
     			setUtil(n, m, v);
     	}
+    }
+
+    public void increment(int n, int m){
+        Integer v = get(n, m) + 1;
+        set(n, m, v);
     }
     
     private void setUtil(int n, int m, int v) {
@@ -47,39 +52,13 @@ public class AdjacentMatrix{
         return matrix.size() + 1;
     }
 
-    public Integer getMaxAdjacentVertexWeightIndex(int n){
-        Integer max = -1;
-        Integer node = null;
-        for(int i = 0; i < size(); i++){
-            Integer tmp = get(n, i);
-            if(tmp != null && i != n && tmp > max){
-                max = tmp;
-                node = i;
-            }
+    public Integer sumOfValues(){
+        int count = 0;
+        for(ArrayList<Integer> list : matrix){
+            for(Integer value : list)
+                count += value;
         }
-        return node;
-    }
-
-    public Integer getMinAdjacentVertexWeightIndex(int n){
-        Integer min = Integer.MAX_VALUE;
-        Integer node = null;
-        for(int i = 0; i < size(); i++){
-            Integer tmp = get(n, i); 
-            if(tmp != null && n != i && tmp < min){
-                min = tmp;
-                node = i;
-            }
-        }
-        return node;
-    }
-
-    public ArrayList<Edge> getEdges(){
-        ArrayList<Edge> result = new ArrayList<Edge>();
-        for(int i = 1; i < size(); i++)
-            for(int j = 0; j < i; j++)
-                result.add(new Edge(j, i, get(j, i)));
-
-        return result;
+        return count;
     }
 
     public static AdjacentMatrix copy(AdjacentMatrix m){
