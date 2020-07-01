@@ -34,7 +34,7 @@ public class AdjacentMatrix{
     }
 
     public void increment(int n, int m, int v){
-        if(v == 0 && n != m)
+        if(get(n, m) == 0 && n != m)
             edges.add(new Edge(n, m));
         v += get(n, m);
         set(n, m, v);
