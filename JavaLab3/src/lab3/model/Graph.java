@@ -29,20 +29,19 @@ public final class Graph {
 
 	public void addAdjacentsNodes(Integer node, ArrayList<Integer> adjacensts){
 		for(Integer nextNode : adjacensts)
-			adjacentMatrix.set(node, nextNode, 1);
+			adjacentMatrix.initializate(node, nextNode);
 	}
 
-	public Graph contraction(Integer nodeA, Integer nodeB){
-		Graph newGraph = new Graph(this);//O(m)
-		for(int i = 0; i < newGraph.adjacentMatrix.size(); i++){//O(m)
-			Integer adjacentNode = newGraph.adjacentMatrix.get(i, nodeB);
-			if(adjacentNode != 0){
-				newGraph.adjacentMatrix.increment(i, nodeA);
-				newGraph.adjacentMatrix.set(i, nodeB, 0);
+	//O(n)
+	public void contraction(Integer nodeA, Integer nodeB){
+		for(int i = 0; i < adjacentMatrix.size(); i++){//O(n)
+			if(adjacentMatrix.get(i, nodeB) != 0){
+				adjacentMatrix.increment(i, nodeA);
+				adjacentMatrix.set(i, nodeB, 0);
 			}
 		}
-		newGraph.adjacentMatrix.set(nodeA, nodeB, 0);
-		return newGraph;
+		adjacentMatrix.getEdges().removeIf(x -> (x.getNodeA() == nodeB || x.getNodeB() == nodeB));//O(n)
+		adjacentMatrix.set(nodeA, nodeB, 0);
 	}
 
 	@Override

@@ -1,30 +1,37 @@
 package lab3.model;
 
-import java.util.Random;
-
 public class Algorithm {
     public static int Karger(Graph G, int k){
         Integer min = Integer.MAX_VALUE;
         for(int i = 0; i < k; i++){
-            int t = full_contraction(G);
+            Graph newGraph = new Graph(G);//O(m)
+            int t = full_contraction(newGraph);//O(n^2)
             if(t < min)
                 min = t;
         }
         return min;
     }
 
-    private static int full_contraction(Graph G){
+    public static double full_contraction_time(Graph G){
         Graph newGraph = new Graph(G);
-        for(int i = 0; i < newGraph.getDimension(); i++){
-            Random rnd = new Random(42);
-            int nodeA = rnd.nextInt(newGraph.getDimension());
-            int nodeB = rnd.nextInt(newGraph.getDimension());
-            while(newGraph.getAdjacentMatrixWeight(nodeA, nodeB) == 0){
-                nodeA = rnd.nextInt(newGraph.getDimension());
-                nodeB = rnd.nextInt(newGraph.getDimension());
-            }
-            newGraph.contraction(nodeA, nodeB);
+        long start = System.currentTimeMillis();
+        long stop = 0;
+
+        full_contraction(newGraph);
+
+        if(stop == 0)
+            stop = System.currentTimeMillis();
+        return (stop - start) / 1000;
+    }
+
+    private static int full_contraction(Graph G){
+        for(int i = 0; i < G.getDimension() - 2; i++){
+            Edge randomEdge = G.getAdjacentMatrix().getRandomEdge();//O(n)
+            Integer nodeA = randomEdge.getNodeA();
+            Integer nodeB = randomEdge.getNodeB();
+
+            G.contraction(nodeA, nodeB);//O(n)
         }
-        return newGraph.getNumberOfEdges();
+        return G.getNumberOfEdges();//O((n^2)/2)
     }
 }

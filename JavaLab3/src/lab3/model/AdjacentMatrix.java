@@ -1,9 +1,12 @@
 package lab3.model;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Random;
 
 public class AdjacentMatrix{
     private ArrayList<ArrayList<Integer>> matrix;
+    private LinkedList<Edge> edges = new LinkedList<Edge>();
 
     public AdjacentMatrix(int n){
         matrix = new ArrayList<ArrayList<Integer>>();
@@ -18,6 +21,10 @@ public class AdjacentMatrix{
         }
     }
 
+    public LinkedList<Edge> getEdges() {
+        return this.edges;
+    }
+
     public void set(int n, int m, int v){
     	if(n != m) {
     		if(n > m)
@@ -29,7 +36,21 @@ public class AdjacentMatrix{
 
     public void increment(int n, int m){
         Integer v = get(n, m) + 1;
+        if(v == 1 && n != m)
+            edges.add(new Edge(n, m));
         set(n, m, v);
+    }
+
+    public void initializate(int n, int m){
+        if(get(n,m) == 0)
+            edges.add(new Edge(n, m));
+        set(n, m, 1);
+    }
+
+    //O(n)
+    public Edge getRandomEdge(){
+        Random rnd = new Random(42);
+        return edges.get(rnd.nextInt(edges.size()));
     }
     
     private void setUtil(int n, int m, int v) {
@@ -63,9 +84,12 @@ public class AdjacentMatrix{
 
     public static AdjacentMatrix copy(AdjacentMatrix m){
         AdjacentMatrix tmp = new AdjacentMatrix(m.size());
-        for(int i = 0; i < m.matrix.size(); i++){
-            for(int j = 0; j < m.matrix.get(i).size(); j++)
-                tmp.matrix.get(i).set(j, m.matrix.get(i).get(j));
+
+        for(Edge edge : m.edges){
+            int nodeA = edge.getNodeA();
+            int nodeB = edge.getNodeB();
+            tmp.edges.add(new Edge(nodeA, nodeB));
+            tmp.set(nodeA, nodeB, m.get(nodeA, nodeB));
         }
         return tmp;
     }
