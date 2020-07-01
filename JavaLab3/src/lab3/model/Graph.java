@@ -16,7 +16,7 @@ public class Graph{
 	public Graph clone() {
 		HashMap<Integer, ArrayList<Integer>> graph = new HashMap<Integer, ArrayList<Integer>>();
 		for(Integer key: this.graph.keySet())
-			graph.put(key, this.graph.get(key));
+			graph.put(key, getAdjacencyListFromGivenNode(key));
 		return new Graph(graph);
 	}
 	
