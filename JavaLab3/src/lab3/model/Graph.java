@@ -36,11 +36,12 @@ public final class Graph {
 	public void contraction(Integer nodeA, Integer nodeB){
 		for(int i = 0; i < adjacentMatrix.size(); i++){//O(n)
 			if(adjacentMatrix.get(i, nodeB) != 0){
-				adjacentMatrix.increment(i, nodeA);
+				adjacentMatrix.increment(i, nodeA, adjacentMatrix.get(i, nodeB));
 				adjacentMatrix.set(i, nodeB, 0);
 			}
 		}
-		adjacentMatrix.getEdges().removeIf(x -> (x.getNodeA() == nodeB || x.getNodeB() == nodeB));//O(n)
+		if(adjacentMatrix.getEdges().size() != 1)
+			adjacentMatrix.getEdges().removeIf(x -> (x.getNodeA() == nodeB || x.getNodeB() == nodeB));//O(n)
 		adjacentMatrix.set(nodeA, nodeB, 0);
 	}
 

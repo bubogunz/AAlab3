@@ -5,7 +5,6 @@ public class Algorithm {
         Integer min = Integer.MAX_VALUE;
         for(int i = 0; i < k; i++){
             Graph newGraph = new Graph(G);//O(m)
-            
             int t = full_contraction(newGraph);//O(n^2)
             if(t < min)
                 min = t;

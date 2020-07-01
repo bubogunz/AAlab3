@@ -90,8 +90,8 @@ public class Main {
 
 			 dataset.forEach((in, out) -> {
 				try{
-//					String in = "mincut_dataset/input_random_8_10.txt";
-//					int out = 1;
+					// String in = "mincut_dataset/input_random_5_10.txt";
+					// int out = 1;
 					System.out.println("Input: " + in);
 					System.out.println("Expected output:" + out);
 	
@@ -147,7 +147,7 @@ public class Main {
 		String[] words = in.split("_");
 		int size = Integer.parseInt(words[3].replace(".txt", ""));
 		double error = (cost - out)/out*100;
-		if(cost - out < 0)
+		if(cost - out < 0){
 			if(size >= 150)
 				error = 0;
 			else{
@@ -155,6 +155,7 @@ public class Main {
 				System.out.println();				
 				return;
 			}
+		}
 		
 		System.out.println("Test passed! Cost is " + cost);
 		System.out.println();

@@ -2,7 +2,6 @@ package lab3.model;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Random;
 
 public class AdjacentMatrix{
     private ArrayList<ArrayList<Integer>> matrix;
@@ -34,10 +33,10 @@ public class AdjacentMatrix{
     	}
     }
 
-    public void increment(int n, int m){
-        Integer v = get(n, m) + 1;
-        if(v == 1 && n != m)
+    public void increment(int n, int m, int v){
+        if(v == 0 && n != m)
             edges.add(new Edge(n, m));
+        v += get(n, m);
         set(n, m, v);
     }
 
@@ -50,7 +49,6 @@ public class AdjacentMatrix{
     //O(n)
     public Edge getRandomEdge(){
         int rnd = (int) (Math.random() * edges.size());
-        int si = edges.size();
         return edges.get(rnd);
     }
     
