@@ -76,4 +76,9 @@ public final class Graph {
 	public int getNumberOfEdges(){
 		return adjacentMatrix.sumOfValues();
 	}
+	
+	@Override
+	public String toString() {
+		return adjacentMatrix.toString();
+	}
 }

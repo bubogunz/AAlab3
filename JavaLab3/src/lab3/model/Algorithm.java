@@ -5,6 +5,7 @@ public class Algorithm {
         Integer min = Integer.MAX_VALUE;
         for(int i = 0; i < k; i++){
             Graph newGraph = new Graph(G);//O(m)
+            
             int t = full_contraction(newGraph);//O(n^2)
             if(t < min)
                 min = t;
@@ -13,14 +14,14 @@ public class Algorithm {
     }
 
     public static double full_contraction_time(Graph G){
-        Graph newGraph = new Graph(G);
+//        Graph newGraph = new Graph(G);
         long start = System.currentTimeMillis();
         long stop = 0;
 
-        full_contraction(newGraph);
+//        full_contraction(newGraph);
+        full_contraction(G);
 
-        if(stop == 0)
-            stop = System.currentTimeMillis();
+        stop = System.currentTimeMillis();
         return (stop - start) / 1000;
     }
 

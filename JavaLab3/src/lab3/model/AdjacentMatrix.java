@@ -49,8 +49,9 @@ public class AdjacentMatrix{
 
     //O(n)
     public Edge getRandomEdge(){
-        Random rnd = new Random(42);
-        return edges.get(rnd.nextInt(edges.size()));
+        int rnd = (int) (Math.random() * edges.size());
+        int si = edges.size();
+        return edges.get(rnd);
     }
     
     private void setUtil(int n, int m, int v) {
@@ -62,7 +63,6 @@ public class AdjacentMatrix{
     		return 0;
     	return n > m ? getUtil(m, n)
     			: getUtil(n, m);
-    	
     }
     
     private Integer getUtil(int n, int m) {

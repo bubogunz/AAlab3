@@ -88,11 +88,12 @@ public class Main {
 			FileWriter fw = new FileWriter(outputPath, false);
 			fw.write("Size\tSolution\tTime(s)\tFull Contraction time(s)\tError(%)\n");
 
-			// dataset.forEach((in, out) -> {
+			 dataset.forEach((in, out) -> {
 				try{
-					String in = "mincut_dataset\\input_random_1_6.txt";
-					int out = 2;
+//					String in = "mincut_dataset/input_random_8_10.txt";
+//					int out = 1;
 					System.out.println("Input: " + in);
+					System.out.println("Expected output:" + out);
 	
 					File myObj = new File(in);
 					Scanner myReader = new Scanner(myObj);
@@ -134,7 +135,7 @@ public class Main {
 					
 				}catch (FileNotFoundException e) {}
 				catch (IOException e) {}
-			// });
+			 });
 			fw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -150,11 +151,13 @@ public class Main {
 			if(size >= 150)
 				error = 0;
 			else{
-				System.out.println("Test FAILED!");
+				System.out.println("Test FAILED! Cost is " + cost);
+				System.out.println();				
 				return;
 			}
 		
-		System.out.print("Test passed!");
+		System.out.println("Test passed! Cost is " + cost);
+		System.out.println();
 		fw.write(size + "\t" + cost + "\t" + time + "\t" + time_full_contr + "\t" + error + "\n");
 	}
 
