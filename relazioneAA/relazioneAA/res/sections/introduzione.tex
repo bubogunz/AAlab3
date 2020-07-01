@@ -1,7 +1,7 @@
 \section{Introduzione}
 Il presente documento descrive le scelte architetturali ed implementative del terzo elaborato di laboratorio del corso di Algoritmi Avanzati. Di seguito, verrà offerta una panoramica sul lavoro svolto dagli studenti Nicola Carlesso e Federico Brian, riguardante le prestazioni dell'algoritmo di Karger per il problema del \emph{Minimum Cut}\footnote{d'ora in poi mincut}, rispetto a quattro parametri:
 \begin{itemize}
-	\item Il tempo impiegato dalla procedura di \textbf{Full Contraction};
+	\item Il tempo impiegato dalla procedura di \texttt{FullContraction};
 	\item Il tempo impiegato dall'algoritmo completo per ripetere la contrazione un numero sufficientemente alto di volte;
 	\item Il \emph{discovery time}, ossia il momento in cui l'algoritmo trova per la prima volta il taglio di costo minimo
 	\item L'errore  nella soluzione trovata rispetto al risultato ottimo.
@@ -29,28 +29,12 @@ Per definire il problema del mincut, abbiamo bisogno di dare prima delle definiz
 Cioè esiste almeno un lato che connette ogni coppia di nodi in $\mathcal{V}$.
 \begin{defi} \textbf{(Connettività).} Un multigrafo è connesso se $\forall\ u,v\in\mathcal{V}$ $\Rightarrow\exists$ un cammino che li connette.
 \end{defi}
-\begin{defi} \textbf{(Taglio).} Dato un \mgrafo connesso, un taglio $\mathcal{C}\subseteq\mathcal{E}$ è un multiinsieme di lati tale che $\mathcal{G}' = (\mathcal{V}, \mathcal{E} - \mathcal{C})$ non è connesso.\eqcapo
-Equivalentemente, si può dire che $\mathcal{G}'$ ha almeno due componenti connesse.
+\begin{defi} \textbf{(Taglio).} Dato un \mgrafo connesso, un taglio $\mathcal{C}\subseteq\mathcal{E}$ è un multiinsieme di lati tale che $\mathcal{G}' = (\mathcal{V}, \mathcal{E} - \mathcal{C})$ non è connesso.
 \end{defi}
+Equivalentemente, si può dire che $\mathcal{G}'$ ha almeno due componenti connesse.
 \newpage
 \subsection{Problema del Minimum Cut}
 \emph{\quotes{Dato un \mgrafo non orientato, un taglio $\mathcal{C}\subseteq \mathcal{E}$ è il multiinsieme di lati di cardinalità minima tale che $\mathcal{G'} = (\mathcal{V},\mathcal{E}\setmin\mathcal{C}$) non è connesso.}}
-
-\subsection{Tipologia di distanze}
-\par La distanza tra due punti $u$ e $v$ può essere:
-\begin{itemize}
-	\item \textbf{Euclidea:} dati due punti \texttt{(xa; ya)} e \texttt{(xb,yb)} la distanza tra di loro è calcolata come segue, arrotondando all'intero più vicino:\\ 
-	
-	\item \textbf{Geografica:} se TSP è un problema da risolvere con distanze geografiche, allora i punti si trovano nella superficie terrestre, di raggio 6378.388 km. Le loro coordinate indicano la latitudine e la longitudine del corrispondente punto sul pianeta Terra: di seguito viene riportato il metodo utilizzato per calcolare questo tipo di distanza.\\
-	
-\end{itemize}\newpage
-Gli algoritmi da implementare per risolvere il problema rientrano in tre categorie:
-\begin{enumerate}
-	\item \textbf{Algoritmi esatti}, ovvero l'algoritmo di \textbf{Held e Karp}\footnote{d'ora in poi \texttt{HeldKarp}} che ritorna la soluzione esatta del problema TSP con complessità \comp{n^2 2^n};
-	\item \textbf{Euristiche costruttive}, cioè algoritmi che non possono dare nessun vincolo sulla soluzione ritornata. Essi arrivano alla soluzione procedendo un vertice alla volta seguendo delle regole prefissate. In particolar modo vedremo l'euristica \textbf{Cheapest Insertion}\footnote{d'ora in poi \texttt{CheapestInsertion}} che, in caso la disuguaglianza triangolare venga rispettata, si dimostra approssimare la soluzione al più di un fattore 2. Generalmente, l'utilizzo di tale euristica permette di trovare una soluzione $\log (n)$-approssimata a TSP.
-	\item \textbf{Algoritmo 2-approssimato}, cioè un algoritmo di approssimazione che può ritornare una soluzione al più 2 volte peggiore di quella ritornata da un algoritmo esatto. Dato che la disuguaglianza triangolare viene rispettata, vedremo l'algoritmo \textbf{Triangle TSP}\footnote{d'ora in poi \texttt{TriangleTSP}} che risolve il problema TSP con un algoritmo 2-approssimato attraverso la costruzione di un MST\footnote{\emph{Minimum Spanning Tree}}.
-\end{enumerate}
- Infine, verranno esposti ed adeguatamente discussi i risultati ottenuti.
  
 \section{Scelta del linguaggio di programmazione}
 Per lo svolgimento di questo \emph{assignment}, come per il precedente, è stato scelto Java nella sua versione 8 come linguaggio di programmazione. La scelta è derivata, principalmente, da due fattori: 
