@@ -15,17 +15,13 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 import lab3.algorithm.MinCut;
 import lab3.model.AdjacentMatrix;
 import lab3.model.Graph;
 
 
 public class Main {
-
-	public static void main(String[] args) throws InterruptedException {
-		// test();
-		compute();
-	}
 
 	public static void printHeapInfo() {
 
@@ -59,7 +55,7 @@ public class Main {
 	 * algorithm, calling the sub-funtion full_contaction.
 	 * At the end writes all results in the file "mincut.txt" 
 	 */
-	public static void compute() throws InterruptedException {
+	public static void main (String args[]) throws InterruptedException {
 		// fetch files
 		try (Stream<Path> walk = Files.walk(Paths.get("mincut_dataset"))) {
 			List<String> mincut_dataset = walk.filter(Files::isRegularFile).map(x -> x.toString()).sorted()
@@ -159,7 +155,9 @@ public class Main {
 	 * @param out the correct mincut value, user to calcurate the relative error
 	 * @throws IOException
 	 */
-	static void writeresults(FileWriter fw, String in, int cost, double time, double time_full_contr, double discovery_time, int out) throws IOException {
+	static void writeresults(String in, int cost, double time, double time_full_contr, double discovery_time, int out) throws IOException {
+		final File outputPath = new File("mincut.txt");
+		FileWriter fw = new FileWriter(outputPath, true);
 		String[] words = in.split("_");
 		int size = Integer.parseInt(words[4].replace(".txt", ""));
 		String dataset = in.split("\\\\")[1].substring(0, in.split("\\\\")[1].lastIndexOf("_"));
@@ -172,7 +170,8 @@ public class Main {
 			else{
 				test = false;
 				System.out.println("Test FAILED! Cost is " + cost);
-				System.out.println();				
+				System.out.println();
+				fw.close();			
 				return;
 			}
 		}
@@ -181,6 +180,7 @@ public class Main {
 		if(!test)
 			System.out.println("Some tests not passed");
 		System.out.println();
+
 		fw.write(dataset + "\t\t" + size + "\t\t\t" + cost + "\t\t" + time + "\t\t" + time_full_contr + "\t\t\t\t" + discovery_time + "\t\t\t   " + error + "\n");
 	}
 	

@@ -1,7 +1,6 @@
 package lab3.model;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public final class Graph {
 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Dataset				Size	Solution	Time(s)		Full Contraction(s)		Discovery time(s)	Error(%)
 input_random_1		6			2		4.59E-5			1.0E-6				1.26E-5			    0.0
 input_random_2		6			1		4.97E-5			1.2E-6				3.7E-6			   	0.0
@@ -39,3 +40,4 @@ input_random_37		200			54		730.3265273		0.0072138			7.7587212		    0.0
 input_random_38		200			52		685.7037242		0.0066759			0.6157363	   		0.0
 input_random_39		200			51		708.7966211		0.0072141			3.3346295	  	 	0.0
 input_random_40		200			61		730.9270492		0.0075121			12.4704872	   		0.0
+
