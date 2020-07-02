@@ -20,6 +20,30 @@ public class Algorithm {
         return min;
     }
 
+    public static double Karger_discovery_time(Graph G, int k, int out){
+        long start = System.currentTimeMillis();
+        long stop = 0;
+
+        Integer min = Integer.MAX_VALUE;
+        for(int i = 0; i < k; i++){//O(n^2 log n)
+            Graph newGraph = new Graph(G);//O(m)
+            int t = full_contraction(newGraph);//O(n^2)
+            if(t < min)
+                min = t;
+            if(min == out){
+                if(stop == 0)
+                    stop = System.currentTimeMillis();
+                double time = stop - start;
+                return time / 1000;
+            }
+        }
+
+        if(stop == 0)
+            stop = System.currentTimeMillis();
+        double time = stop - start;
+        return time / 1000;
+    }
+
     /**
      * Measure the compute time of full_contraction function.
      * Complexity = O(n^2)

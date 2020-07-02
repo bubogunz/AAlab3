@@ -83,7 +83,7 @@ public class Main {
 
 			final File outputPath = new File("mincut.txt");
 			FileWriter fw = new FileWriter(outputPath, false);
-			fw.write("Size\tSolution\tTime(s)\tFull Contraction time(s)\tError(%)\n");
+			fw.write("Size\tSolution\tTime(s)\tFull Contraction time(s)\tDiscovery ume(s)\tError(%)\n");
 
 			 dataset.forEach((in, out) -> {
 				try{
@@ -129,7 +129,9 @@ public class Main {
 
 					double time_full_contr = Algorithm.full_contraction_time(G);
 
-					writeresults(fw, in, cost, time, time_full_contr, out);
+					double discovery_time = Algorithm.Karger_discovery_time(G, k, out);
+
+					writeresults(fw, in, cost, time, time_full_contr, discovery_time, out);
 					
 				}catch (FileNotFoundException e) {}
 				catch (IOException e) {
@@ -150,10 +152,11 @@ public class Main {
 	 * @param cost the mincut calculated
 	 * @param time the time to calculate the mincut
 	 * @param time_full_contr the time to calculate first iteration of Karger algorithm
+	 * @param discovery_time the time to find the correct mincut
 	 * @param out the correct mincut value, user to calcurate the relative error
 	 * @throws IOException
 	 */
-	static void writeresults(FileWriter fw, String in, int cost, double time, double time_full_contr, int out) throws IOException {
+	static void writeresults(FileWriter fw, String in, int cost, double time, double time_full_contr, double discovery_time, int out) throws IOException {
 		String[] words = in.split("_");
 		int size = Integer.parseInt(words[3].replace(".txt", ""));
 		double error = (cost - out)/out*100;
@@ -173,7 +176,7 @@ public class Main {
 		if(!test)
 			System.out.println("Some tests not passed");
 		System.out.println();
-		fw.write(size + "\t" + cost + "\t" + time + "\t" + time_full_contr + "\t" + error + "\n");
+		fw.write(size + "\t" + cost + "\t" + time + "\t" + time_full_contr + "\t" + discovery_time + "\t" + error + "\n");
 	}
 
 	static void test(){
