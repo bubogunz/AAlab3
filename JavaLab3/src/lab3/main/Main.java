@@ -15,17 +15,11 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import lab3.model.AdjacentMatrix;
 import lab3.model.Algorithm;
 import lab3.model.Graph;
 
 
 public class Main {
-
-	public static void main(String[] args) throws InterruptedException {
-		// test();
-		compute();
-	}
 
 	public static void printHeapInfo() {
 
@@ -59,7 +53,7 @@ public class Main {
 	 * algorithm, calling the sub-funtion full_contaction.
 	 * At the end writes all results in the file "mincut.txt" 
 	 */
-	public static void compute() throws InterruptedException {
+	public static void main (String args[]) throws InterruptedException {
 		// fetch files
 		try (Stream<Path> walk = Files.walk(Paths.get("mincut_dataset"))) {
 			List<String> mincut_dataset = walk.filter(Files::isRegularFile).map(x -> x.toString()).sorted()
@@ -84,6 +78,7 @@ public class Main {
 			final File outputPath = new File("mincut.txt");
 			FileWriter fw = new FileWriter(outputPath, false);
 			fw.write("Size\tSolution\tTime(s)\tFull Contraction time(s)\tDiscovery time(s)\tError(%)\n");
+			fw.close();
 
 			 dataset.forEach((in, out) -> {
 				try{
@@ -131,7 +126,7 @@ public class Main {
 
 					double discovery_time = Algorithm.Karger_discovery_time(G, k, out);
 
-					writeresults(fw, in, cost, time, time_full_contr, discovery_time, out);
+					writeresults(in, cost, time, time_full_contr, discovery_time, out);
 					
 				}catch (FileNotFoundException e) {}
 				catch (IOException e) {
@@ -156,9 +151,11 @@ public class Main {
 	 * @param out the correct mincut value, user to calcurate the relative error
 	 * @throws IOException
 	 */
-	static void writeresults(FileWriter fw, String in, int cost, double time, double time_full_contr, double discovery_time, int out) throws IOException {
+	static void writeresults(String in, int cost, double time, double time_full_contr, double discovery_time, int out) throws IOException {
+		final File outputPath = new File("mincut.txt");
+		FileWriter fw = new FileWriter(outputPath, true);
 		String[] words = in.split("_");
-		int size = Integer.parseInt(words[3].replace(".txt", ""));
+		int size = Integer.parseInt(words[4].replace(".txt", ""));
 		double error = (cost - out)/out*100;
 		error = Math.floor(error * 100) / 100;
 		boolean test = true;
@@ -168,7 +165,8 @@ public class Main {
 			else{
 				test = false;
 				System.out.println("Test FAILED! Cost is " + cost);
-				System.out.println();				
+				System.out.println();
+				fw.close();			
 				return;
 			}
 		}
@@ -178,45 +176,6 @@ public class Main {
 			System.out.println("Some tests not passed");
 		System.out.println();
 		fw.write(size + "\t" + cost + "\t" + time + "\t" + time_full_contr + "\t" + discovery_time + "\t" + error + "\n");
-	}
-
-	static void test(){
-		Graph test = new Graph(6);
-		ArrayList<Integer> a = new ArrayList<Integer>();
-		ArrayList<Integer> b = new ArrayList<Integer>();
-		ArrayList<Integer> c = new ArrayList<Integer>();
-		ArrayList<Integer> d = new ArrayList<Integer>();
-		ArrayList<Integer> e = new ArrayList<Integer>();
-		ArrayList<Integer> f = new ArrayList<Integer>();
-		a.add(1);
-		a.add(2);
-		a.add(3);
-		b.add(0);
-		b.add(4);
-		b.add(5);
-		b.add(3);
-		c.add(0);
-		c.add(4);
-		d.add(1);
-		d.add(0);
-		d.add(4);
-		e.add(1);
-		e.add(2);
-		e.add(3);
-		e.add(5);
-		f.add(1);
-		f.add(4);
-		test.addAdjacentsNodes(0, a);
-		test.addAdjacentsNodes(1, b);
-		test.addAdjacentsNodes(2, c);
-		test.addAdjacentsNodes(3, d);
-		test.addAdjacentsNodes(4, e);
-		test.addAdjacentsNodes(5, f);
-
-		System.out.println(test.getAdjacentMatrix()+"\n");
-		System.out.println(AdjacentMatrix.copy(test.getAdjacentMatrix()));
-		test.contraction(1,4);
-		System.out.println(test.getAdjacentMatrix());
-		System.out.println(test.getNumberOfEdges());
+		fw.close();
 	}
 }

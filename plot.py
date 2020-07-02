@@ -3,29 +3,31 @@ import numpy as np
 import os
 
 def plot(x, y, title):
-    plt.plot(x, y, 'k', x, y, 'ro')
+    plt.plot(x, y, 'k', x, y)
+    plt.xticks([6, 10, 25, 50, 75, 100, 125, 150, 175, 200])
     plt.xlabel("Size of graph (nodes)")
     plt.ylabel("Time (s)")
     plt.yscale("log")
     plt.savefig(os.path.join(os.path.abspath(os.path.dirname(__file__)), f"relazioneAA/relazioneAA/imgs/{title}.png"))
 
 def mean(x):
-    i = 0
+    i = 1
     summ = 0
     y = []
     for ind in x:
         summ += ind
-        if(i == 3):
+        if(i == 4):
             y.append(summ / 4)
             summ = 0
             i = 0
         i = i + 1
+    return y
 
 
 
 
 my_path = os.path.abspath(os.path.dirname(__file__))
-path = os.path.join(my_path, "JavaLab3/mincut.txt")
+path = os.path.join(my_path, "JavaLab3/mincut(1).txt")
 mincut = open(path, "r")
 
 if mincut.mode == "r" :
@@ -35,11 +37,12 @@ if mincut.mode == "r" :
     discovery_time = []
 
     for line in mincut :
-        list_line = line.split("\t")
-        size_graph.append(int (list_line[0]))
-        time.append(float (list_line[2]))
-        full_contraction_time.append(float (list_line[3]))
-        discovery_time.append(float (list_line[4]))
+        if line.split("\t")[0] != "Size":
+            list_line = line.split("\t")
+            size_graph.append(int (list_line[0]))
+            time.append(float (list_line[2]))
+            full_contraction_time.append(float (list_line[3]))
+            discovery_time.append(float (list_line[4]))
 
     x = []
     y1 = []

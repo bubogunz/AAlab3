@@ -65,9 +65,8 @@ public class AdjacentMatrix{
      * @param m second vertex of edge
      */
     public void initializate(int n, int m){
-        if(get(n,m) == 0){
+        if(get(n,m) == 0)
             edges.add(new Edge(n, m));
-        }
         set(n, m, 1);
     }
 
