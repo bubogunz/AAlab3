@@ -15,8 +15,8 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import lab3.algorithm.MinCut;
 import lab3.model.AdjacentMatrix;
-import lab3.model.Algorithm;
 import lab3.model.Graph;
 
 
@@ -83,12 +83,13 @@ public class Main {
 
 			final File outputPath = new File("mincut.txt");
 			FileWriter fw = new FileWriter(outputPath, false);
-			fw.write("Size\tSolution\tTime(s)\tFull Contraction time(s)\tDiscovery time(s)\tError(%)\n");
-
+//			fw.write("Dataset\t\t\t\tSize\tSolution\tTime(s)\t\tFull Contraction(s)\t\tDiscovery time(s)\tError(%)\n");
+			fw.write("Dataset\t\t\t\tDiscovery time(s)\t\tcost\n");
+			
 			 dataset.forEach((in, out) -> {
 				try{
-					// String in = "mincut_dataset/input_random_29_150.txt";
-					// int out = 37;
+//					 String in = "mincut_dataset/input_random_16_50.txt";
+//					 int out = 10;
 					System.out.println("Input: " + in);
 					System.out.println("Expected output:" + out);
 	
@@ -117,21 +118,23 @@ public class Main {
 
 					int k = (int) Math.ceil(Math.pow(nodes.size(), 2)/2*Math.log(nodes.size()));
 
-					long start = System.currentTimeMillis();
+					long start = System.nanoTime();
 					long stop = 0;
 
-					int cost = Algorithm.Karger(G, k);
+//					int cost = MinCut.Karger(G, k);
+//
+//					if(stop == 0)
+//						stop = System.nanoTime();
+//					long timeElapsed = stop - start;
+//					double time = timeElapsed;
+//					time = time / 1000000000;
+//
+//					double time_full_contr = MinCut.full_contraction_time(G);
 
-					if(stop == 0)
-						stop = System.currentTimeMillis();
-					double time = stop - start;
-					time = time  / 1000;
+					double discovery_time = MinCut.Karger_discovery_time(G, k, out);
 
-					double time_full_contr = Algorithm.full_contraction_time(G);
-
-					double discovery_time = Algorithm.Karger_discovery_time(G, k, out);
-
-					writeresults(fw, in, cost, time, time_full_contr, discovery_time, out);
+//					writeresults(fw, in, cost, time, time_full_contr, discovery_time, out);
+					writeresults(fw, in, discovery_time, out);
 					
 				}catch (FileNotFoundException e) {}
 				catch (IOException e) {
@@ -158,7 +161,8 @@ public class Main {
 	 */
 	static void writeresults(FileWriter fw, String in, int cost, double time, double time_full_contr, double discovery_time, int out) throws IOException {
 		String[] words = in.split("_");
-		int size = Integer.parseInt(words[3].replace(".txt", ""));
+		int size = Integer.parseInt(words[4].replace(".txt", ""));
+		String dataset = in.split("\\\\")[1].substring(0, in.split("\\\\")[1].lastIndexOf("_"));
 		double error = (cost - out)/out*100;
 		error = Math.floor(error * 100) / 100;
 		boolean test = true;
@@ -177,7 +181,13 @@ public class Main {
 		if(!test)
 			System.out.println("Some tests not passed");
 		System.out.println();
-		fw.write(size + "\t" + cost + "\t" + time + "\t" + time_full_contr + "\t" + discovery_time + "\t" + error + "\n");
+		fw.write(dataset + "\t\t" + size + "\t\t\t" + cost + "\t\t" + time + "\t\t" + time_full_contr + "\t\t\t\t" + discovery_time + "\t\t\t   " + error + "\n");
+	}
+	
+	static void writeresults(FileWriter fw, String in, double discovery_time, int out) throws IOException {
+		String[] words = in.split("_");
+		String dataset = in.split("\\\\")[1].substring(0, in.split("\\\\")[1].lastIndexOf("_"));
+		fw.write(dataset + "\t\t" + discovery_time + "\t\t\t" + out + "\n");
 	}
 
 	static void test(){

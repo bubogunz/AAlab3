@@ -1,6 +1,9 @@
-package lab3.model;
+package lab3.algorithm;
 
-public class Algorithm {
+import lab3.model.Edge;
+import lab3.model.Graph;
+
+public class MinCut {
     /**
      * Compute the mincut of graph G with
      * hight probability.
@@ -28,8 +31,8 @@ public class Algorithm {
      * @return the time to find the mincut
      */
     public static double Karger_discovery_time(Graph G, int k, int out){
-        long start = System.currentTimeMillis();
-        long stop = 0;
+        long start = System.nanoTime();
+        long stop = System.nanoTime();
 
         Integer min = Integer.MAX_VALUE;
         for(int i = 0; i < k; i++){//O(n^2 log n)
@@ -38,17 +41,14 @@ public class Algorithm {
             if(t < min)
                 min = t;
             if(min == out){
-                if(stop == 0)
-                    stop = System.currentTimeMillis();
-                double time = stop - start;
-                return time / 1000;
+                stop = System.nanoTime();
+                break;
             }
         }
-
-        if(stop == 0)
-            stop = System.currentTimeMillis();
-        double time = stop - start;
-        return time / 1000;
+        long timeElapsed = stop - start;
+		double time = timeElapsed;
+		time = time / 1000000000;
+		return time;
     }
 
     /**
@@ -58,15 +58,17 @@ public class Algorithm {
      * @return the time to compute full_contraction
      */
     public static double full_contraction_time(Graph G){
-        long start = System.currentTimeMillis();
+        long start = System.nanoTime();
         long stop = 0;
 
         full_contraction(G);//O(n)
 
         if(stop == 0)
-            stop = System.currentTimeMillis();
-        double time = stop - start;
-        return time / 1000;
+            stop = System.nanoTime();
+        long timeElapsed = stop - start;
+		double time = timeElapsed;
+		time = time / 1000000000;
+		return time;
     }
 
     /**

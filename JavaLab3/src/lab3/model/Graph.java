@@ -37,34 +37,13 @@ public final class Graph {
 	 * @param nodeB
 	 */
 	public void contraction(Integer nodeA, Integer nodeB){
-		
-		// int weightA = 0;
-		// int weightB = 0;
-		// LinkedList<Edge> tmp1 = (LinkedList<Edge>) adjacentMatrix.getEdges().clone();
-		// if(tmp1.size() == 2){
-		// 	weightA = adjacentMatrix.get(tmp1.getFirst().getNodeA(), tmp1.getFirst().getNodeB());
-		// 	weightB = adjacentMatrix.get(tmp1.getLast().getNodeA(), tmp1.getLast().getNodeB());
-		// }
-		// for(Edge edge : tmp1)
-		// 	if (adjacentMatrix.get(edge.getNodeA(), edge.getNodeB()) == 0){
-		// 		System.out.println(tmp1);
-		// 		System.out.println(edge); 
-		// 		System.out.println("");
-		// 	}
 		for(int i = 0; i < adjacentMatrix.size(); i++){//O(n)
 			if(adjacentMatrix.get(i, nodeB) != 0){
 				adjacentMatrix.increment(i, nodeA, adjacentMatrix.get(i, nodeB));
 				adjacentMatrix.set(i, nodeB, 0);
 			}
 		}
-		// LinkedList<Edge> tmp = (LinkedList<Edge>) adjacentMatrix.getEdges().clone();
 		adjacentMatrix.getEdges().removeIf(x -> (adjacentMatrix.get(x.getNodeA(), x.getNodeB()) == 0));//O(n)
-		// if(adjacentMatrix.getEdges().size() == 0 && tmp.size() > 1){
-		// 	System.out.println(tmp);
-		// 	System.out.println(tmp1);
-		// 	System.out.println(weightA + " " + weightB);
-		// 	System.out.println("Aiuto");
-		// }
 		adjacentMatrix.set(nodeA, nodeB, 0);
 	}
 
