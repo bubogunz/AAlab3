@@ -1,76 +1,99 @@
 import matplotlib.pyplot as plt
+from matplotlib import colors
+from matplotlib.ticker import PercentFormatter
+import random
 import numpy as np
-import os
+import re
 
-def plot(x, y, title):
-    plt.plot(x, y, 'k', x, y)
-    plt.xticks([6, 10, 25, 50, 75, 100, 125, 150, 175, 200])
-    plt.xlabel("Size of graph (nodes)")
-    plt.ylabel("Time (s)")
-    plt.yscale("log")
-    plt.savefig(os.path.join(os.path.abspath(os.path.dirname(__file__)), f"relazioneAA/relazioneAA/imgs/{title}.png"))
+output = open("./JavaLab3/mincut.txt", "r")
+lines = output.readlines()
 
-def mean(x):
-    i = 1
-    summ = 0
-    y = []
-    for ind in x:
-        summ += ind
-        if(i == 4):
-            y.append(summ / 4)
-            summ = 0
-            i = 0
-        i = i + 1
-    return y
+dataset = []
+size = []
+time = []
+full_contraction = []
+discovery_time = []
 
+for line in lines:
+    ln = re.split(r'\t+', line)
+    if len(ln) > 1:
+        dataset.append(ln[0])
+        if ln[1] != "Size":
+            size.append(int(ln[1]))
+            time.append(float(ln[3]))
+            full_contraction.append(float(ln[4]))
+            discovery_time.append(float(ln[5]))
 
+dataset = dataset[1:]
+"""
+size = size[1:]
+time = time[1:]
+full_contraction = full_contraction[1:]
+discovery_time = discovery_time[1:]
+"""
+"""
+print("dataset:")
+print(dataset)
+print()
+print("size:")
+print(size)
+print()
+print("time:")
+print(time)
+print()
+print("full_contraction:")
+print(full_contraction)
+print()
+print("discovery_time:")
+print(discovery_time)
+"""
 
+avg_size = []
+avg_time = []
+avg_full_contraction = []
+avg_discovery_time = []
 
-my_path = os.path.abspath(os.path.dirname(__file__))
-path = os.path.join(my_path, "JavaLab3/mincut(1).txt")
-mincut = open(path, "r")
+si = 0
+ti = 0.0
+fc = 0.0
+dt = 0.0
 
-if mincut.mode == "r" :
-    size_graph = []
-    time = []
-    full_contraction_time = []
-    discovery_time = []
-
-    for line in mincut :
-        if line.split("\t")[0] != "Size":
-            list_line = line.split("\t")
-            size_graph.append(int (list_line[0]))
-            time.append(float (list_line[2]))
-            full_contraction_time.append(float (list_line[3]))
-            discovery_time.append(float (list_line[4]))
-
-    x = []
-    y1 = []
-    y2 = []
-    y3 = []
-
-    i = 0
-    for ind in size_graph:
-        if(i == 0 or i == 4):
-            x.append(ind)
-            i = 0
-        i = i + 1
-
-    y1 = mean(time)
-    y2 = mean(full_contraction_time)
-    y3 = mean(discovery_time)
-
-    plot(x, y1, "time_Karger")
-    plot(x, y2, "time_full_contraction")
-    plot(x, y3, "time_Karger_discovery_time")
-
-    if len(x) == 10:
-        plot(x[:5], y1[:5], "time_Karger_firstHalf")
-        plot(x[:5], y2[:5], "time_full_contraction_firstHalf")
-        plot(x[:5], y3[:5], "time_Karger_discovery_time_firstHalf")
-
-        plot(x[5:], y1[5:], "time_Karger_secondHalf")
-        plot(x[5:], y2[5:], "time_full_contraction_secondHalf")
-        plot(x[5:], y3[5:], "time_Karger_discovery_time_secondHalf")
-
-mincut.close()
+for i in range(0, len(dataset)):
+    si = si + int(size[i])
+    ti = ti + float(time[i])
+    fc = fc + float(full_contraction[i])
+    dt = dt + float(discovery_time[i])
+    if (i+1)%4 == 0:
+        avg_size.append(si/4)
+        avg_time.append(ti/4)
+        avg_full_contraction.append(fc/4)
+        avg_discovery_time.append(dt/4)
+        si = 0
+        ti = 0.0
+        fc = 0.0
+        dt = 0.0
+"""
+print(size)
+print(time)
+print(full_contraction)
+print(discovery_time)
+"""
+"""
+plt.plot(dataset[0:4], time[0:4])
+plt.title("Karger-Stein algorithm time with |G| = 6")
+plt.yticks(time[0:4])
+plt.ylabel('time elapsed (s)')
+plt.xlabel('graph size')
+plt.show()
+output.close()
+"""
+print(avg_size)
+offset = 680
+plt.bar(dataset[36:40], height=[time[38]-offset, time[37]-offset, time[38]-offset, time[39]-offset], bottom=offset)
+plt.yticks(time[37:40])
+plt.grid(True)
+plt.ylabel('time elapsed (s)')
+plt.title("Karger-Stein algorithm time with |G| = 200")
+#plt.legend()
+#plt.savefig("./imgs/" + dataset[i] + ".png")
+plt.show()
