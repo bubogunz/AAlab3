@@ -83,7 +83,7 @@ public class Main {
 
 			final File outputPath = new File("mincut.txt");
 			FileWriter fw = new FileWriter(outputPath, false);
-			fw.write("Size\tSolution\tTime(s)\tFull Contraction time(s)\tDiscovery ume(s)\tError(%)\n");
+			fw.write("Size\tSolution\tTime(s)\tFull Contraction time(s)\tDiscovery time(s)\tError(%)\n");
 
 			 dataset.forEach((in, out) -> {
 				try{
@@ -160,6 +160,7 @@ public class Main {
 		String[] words = in.split("_");
 		int size = Integer.parseInt(words[3].replace(".txt", ""));
 		double error = (cost - out)/out*100;
+		error = Math.floor(error * 100) / 100;
 		boolean test = true;
 		if(cost - out < 0){
 			if(size >= 150)

@@ -20,6 +20,13 @@ public class Algorithm {
         return min;
     }
 
+    /**
+     * Measure computational time to find the mincut
+     * @param G the graph you want to calculate the mincut
+     * @param k number of iteration to have hight probability
+     * @param out the mincut cost
+     * @return the time to find the mincut
+     */
     public static double Karger_discovery_time(Graph G, int k, int out){
         long start = System.currentTimeMillis();
         long stop = 0;
