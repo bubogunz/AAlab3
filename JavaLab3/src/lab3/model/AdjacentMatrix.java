@@ -3,6 +3,12 @@ package lab3.model;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * Adjacent matrix for the graphs. It contain a list
+ * of edge to return a random edge for the full_contraction
+ * function.
+ * Each value of the matrix is the molteplicity of the edge.
+ */
 public class AdjacentMatrix{
     private ArrayList<ArrayList<Integer>> matrix;
     private LinkedList<Edge> edges = new LinkedList<Edge>();
@@ -33,20 +39,42 @@ public class AdjacentMatrix{
     	}
     }
 
+    /**
+     * Increment the molteplicity of edge (n, m)
+     * by the value v
+     * Complexity = O(1)
+     * @param n first vertex of edge
+     * @param m last vertex of edge
+     * @param v value to increment
+     */
     public void increment(int n, int m, int v){
         if(get(n, m) == 0 && n != m)
             edges.add(new Edge(n, m));
         v += get(n, m);
+        if(v == 0)
+            System.out.println("aiuto");
         set(n, m, v);
     }
 
+    /**
+     * Used during construction of graph,
+     * initialize the value of adjacentMatrix in the
+     * edge (n, m)
+     * Complexity = O(1)
+     * @param n first vertex of edge
+     * @param m second vertex of edge
+     */
     public void initializate(int n, int m){
-        if(get(n,m) == 0)
+        if(get(n,m) == 0){
             edges.add(new Edge(n, m));
+        }
         set(n, m, 1);
     }
 
-    //O(n)
+    /**
+     * Complexity = O(1)
+     * @return a random edge of the graph
+     */
     public Edge getRandomEdge(){
         int rnd = (int) (Math.random() * edges.size());
         return edges.get(rnd);
@@ -80,6 +108,12 @@ public class AdjacentMatrix{
         return count;
     }
 
+    /**
+     * Return a shallow copy of the adjacent matric
+     * Complexity = O(m)
+     * @param m the adjacentMatrix to copy
+     * @return the new adjacentMatrix
+     */
     public static AdjacentMatrix copy(AdjacentMatrix m){
         AdjacentMatrix tmp = new AdjacentMatrix(m.size());
 

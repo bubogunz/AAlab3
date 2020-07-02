@@ -1,9 +1,17 @@
 package lab3.model;
 
 public class Algorithm {
+    /**
+     * Compute the mincut of graph G with
+     * hight probability.
+     * Complexity = O(n^4 log n)
+     * @param G the graph you want to calculate the mincut
+     * @param k number of iteration to have hight probability
+     * @return mincut cost
+     */
     public static int Karger(Graph G, int k){
         Integer min = Integer.MAX_VALUE;
-        for(int i = 0; i < k; i++){
+        for(int i = 0; i < k; i++){//O(n^2 log n)
             Graph newGraph = new Graph(G);//O(m)
             int t = full_contraction(newGraph);//O(n^2)
             if(t < min)
@@ -12,24 +20,35 @@ public class Algorithm {
         return min;
     }
 
+    /**
+     * Measure the compute time of full_contraction function.
+     * Complexity = O(n^2)
+     * @param G the graph you want to calculate the mincut 
+     * @return the time to compute full_contraction
+     */
     public static double full_contraction_time(Graph G){
-//        Graph newGraph = new Graph(G);
         long start = System.currentTimeMillis();
         long stop = 0;
 
-//        full_contraction(newGraph);
-        full_contraction(G);
+        full_contraction(G);//O(n)
 
-        stop = System.currentTimeMillis();
-        return (stop - start) / 1000;
+        if(stop == 0)
+            stop = System.currentTimeMillis();
+        double time = stop - start;
+        return time / 1000;
     }
 
+    /**
+     * Make the full contraction for Karger algorithm.
+     * Complexity = O(n^2)
+     * @param G the graph you want to calculate the mincut
+     * @return The number of edge of new graph contracted
+     */
     private static int full_contraction(Graph G){
-        for(int i = 0; i < G.getDimension() - 2; i++){
+        while(G.getAdjacentMatrix().getEdges().size() > 1){//O(n)
             Edge randomEdge = G.getAdjacentMatrix().getRandomEdge();//O(n)
             Integer nodeA = randomEdge.getNodeA();
             Integer nodeB = randomEdge.getNodeB();
-
             G.contraction(nodeA, nodeB);//O(n)
         }
         return G.getNumberOfEdges();//O((n^2)/2)

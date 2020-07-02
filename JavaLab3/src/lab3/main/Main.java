@@ -53,14 +53,11 @@ public class Main {
 	}
 
 	/**
-	 * @param algorithm = the algorithm to compute. This would be the Karger-Stein
-	 *                  algorithm to calculate the minimum cut of a multigraph
-	 * @throws InterruptedException
-	 * 
-	 *                              This function executes the algorithm choosen in
-	 *                              68 graphs that are builded with mst_dataset
-	 *                              folder. The results are stored in a file with
-	 *                              the name of algorithm choosen.
+	 * This function compute the minimumcut problem whit the Karger
+	 * algorithm and measures its the computational time. It measures
+	 * also the computational time of first iteration of Karger
+	 * algorithm, calling the sub-funtion full_contaction.
+	 * At the end writes all results in the file "mincut.txt" 
 	 */
 	public static void compute() throws InterruptedException {
 		// fetch files
@@ -80,7 +77,7 @@ public class Main {
 						myReader = new Scanner(myObj);
 						int value = Integer.valueOf(myReader.nextLine());
 						dataset.put(file.replace("output", "input"), value);
-					} catch (FileNotFoundException e) { }
+					} catch (FileNotFoundException e) {e.printStackTrace();}
 				}
 			});
 
@@ -90,8 +87,8 @@ public class Main {
 
 			 dataset.forEach((in, out) -> {
 				try{
-					// String in = "mincut_dataset/input_random_5_10.txt";
-					// int out = 1;
+					// String in = "mincut_dataset/input_random_29_150.txt";
+					// int out = 37;
 					System.out.println("Input: " + in);
 					System.out.println("Expected output:" + out);
 	
@@ -127,14 +124,17 @@ public class Main {
 
 					if(stop == 0)
 						stop = System.currentTimeMillis();
-					double time = (stop - start) / 1000;
+					double time = stop - start;
+					time = time  / 1000;
 
 					double time_full_contr = Algorithm.full_contraction_time(G);
 
 					writeresults(fw, in, cost, time, time_full_contr, out);
 					
 				}catch (FileNotFoundException e) {}
-				catch (IOException e) {}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
 			 });
 			fw.close();
 		} catch (IOException e) {
@@ -143,14 +143,26 @@ public class Main {
 		
 	}
 
+	/**
+	 * Write the results of "compute" function in "mincut.txt"
+	 * @param fw FileWriter for the mincut.txt file
+	 * @param in name of the graph of witch it was calculated mincut
+	 * @param cost the mincut calculated
+	 * @param time the time to calculate the mincut
+	 * @param time_full_contr the time to calculate first iteration of Karger algorithm
+	 * @param out the correct mincut value, user to calcurate the relative error
+	 * @throws IOException
+	 */
 	static void writeresults(FileWriter fw, String in, int cost, double time, double time_full_contr, int out) throws IOException {
 		String[] words = in.split("_");
 		int size = Integer.parseInt(words[3].replace(".txt", ""));
 		double error = (cost - out)/out*100;
+		boolean test = true;
 		if(cost - out < 0){
 			if(size >= 150)
 				error = 0;
 			else{
+				test = false;
 				System.out.println("Test FAILED! Cost is " + cost);
 				System.out.println();				
 				return;
@@ -158,6 +170,8 @@ public class Main {
 		}
 		
 		System.out.println("Test passed! Cost is " + cost);
+		if(!test)
+			System.out.println("Some tests not passed");
 		System.out.println();
 		fw.write(size + "\t" + cost + "\t" + time + "\t" + time_full_contr + "\t" + error + "\n");
 	}

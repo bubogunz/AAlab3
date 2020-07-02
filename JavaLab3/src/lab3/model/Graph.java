@@ -1,6 +1,7 @@
 package lab3.model;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public final class Graph {
 
@@ -11,6 +12,11 @@ public final class Graph {
 		adjacentMatrix = new AdjacentMatrix(n);
 	}
 
+	/**
+	 * Create a shallow copy of the graph
+	 * Complexity = O(m)
+	 * @param graph
+	 */
 	public Graph(Graph graph){//O(m)
 		adjacentMatrix = AdjacentMatrix.copy(graph.getAdjacentMatrix());
 	}
@@ -19,29 +25,46 @@ public final class Graph {
         return adjacentMatrix;
 	}
 
-	public int getAdjacentMatrixWeight(int x, int y) {
-		return adjacentMatrix.get(x, y);
-	}
-
-	public void setAdjacentmatrixWeight(int x, int y, int value) {
-		adjacentMatrix.set(x, y, value);
-	}
-
 	public void addAdjacentsNodes(Integer node, ArrayList<Integer> adjacensts){
 		for(Integer nextNode : adjacensts)
 			adjacentMatrix.initializate(node, nextNode);
 	}
 
-	//O(n)
+	/**
+	 * Make a contraction of edge (nodeA, nodeB)
+	 * Complexity = O(n)
+	 * @param nodeA
+	 * @param nodeB
+	 */
 	public void contraction(Integer nodeA, Integer nodeB){
+		
+		// int weightA = 0;
+		// int weightB = 0;
+		// LinkedList<Edge> tmp1 = (LinkedList<Edge>) adjacentMatrix.getEdges().clone();
+		// if(tmp1.size() == 2){
+		// 	weightA = adjacentMatrix.get(tmp1.getFirst().getNodeA(), tmp1.getFirst().getNodeB());
+		// 	weightB = adjacentMatrix.get(tmp1.getLast().getNodeA(), tmp1.getLast().getNodeB());
+		// }
+		// for(Edge edge : tmp1)
+		// 	if (adjacentMatrix.get(edge.getNodeA(), edge.getNodeB()) == 0){
+		// 		System.out.println(tmp1);
+		// 		System.out.println(edge); 
+		// 		System.out.println("");
+		// 	}
 		for(int i = 0; i < adjacentMatrix.size(); i++){//O(n)
 			if(adjacentMatrix.get(i, nodeB) != 0){
 				adjacentMatrix.increment(i, nodeA, adjacentMatrix.get(i, nodeB));
 				adjacentMatrix.set(i, nodeB, 0);
 			}
 		}
-		if(adjacentMatrix.getEdges().size() != 1)
-			adjacentMatrix.getEdges().removeIf(x -> (x.getNodeA() == nodeB || x.getNodeB() == nodeB));//O(n)
+		// LinkedList<Edge> tmp = (LinkedList<Edge>) adjacentMatrix.getEdges().clone();
+		adjacentMatrix.getEdges().removeIf(x -> (adjacentMatrix.get(x.getNodeA(), x.getNodeB()) == 0));//O(n)
+		// if(adjacentMatrix.getEdges().size() == 0 && tmp.size() > 1){
+		// 	System.out.println(tmp);
+		// 	System.out.println(tmp1);
+		// 	System.out.println(weightA + " " + weightB);
+		// 	System.out.println("Aiuto");
+		// }
 		adjacentMatrix.set(nodeA, nodeB, 0);
 	}
 
