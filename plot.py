@@ -3,7 +3,6 @@ import numpy as np
 import os
 
 def plot(x, y, title):
-    plt.figure(title)
     plt.plot(x, y, 'k', x, y, 'ro')
     plt.xlabel("Size of graph (nodes)")
     plt.ylabel("Time (s)")
