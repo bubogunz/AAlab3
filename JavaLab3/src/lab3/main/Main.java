@@ -17,36 +17,10 @@ import java.util.stream.Stream;
 
 
 import lab3.algorithm.MinCut;
-import lab3.model.AdjacentMatrix;
 import lab3.model.Graph;
 
 
 public class Main {
-
-	public static void printHeapInfo() {
-
-		long heapSize = Runtime.getRuntime().totalMemory();
-
-		// Get maximum size of heap in bytes. The heap cannot grow beyond this size.//
-		// Any attempt will result in an OutOfMemoryException.
-		long heapMaxSize = Runtime.getRuntime().maxMemory();
-
-		// Get amount of free memory within the heap in bytes. This size will increase
-		// // after garbage collection and decrease as new objects are created.
-		long heapFreeSize = Runtime.getRuntime().freeMemory();
-
-		System.out.println("heapsize " + formatSize(heapSize));
-		System.out.println("heapmaxsize " + formatSize(heapMaxSize));
-		System.out.println("heapFreesize " + formatSize(heapFreeSize));
-		System.out.println("usedHeap " + formatSize(heapMaxSize - heapFreeSize));
-	}
-
-	public static String formatSize(long v) {
-		if (v < 1024)
-			return v + " B";
-		int z = (63 - Long.numberOfLeadingZeros(v)) / 10;
-		return String.format("%.1f %sB", (double) v / (1L << (z * 10)), " KMGTPE".charAt(z));
-	}
 
 	/**
 	 * This function compute the minimumcut problem whit the Karger
@@ -79,13 +53,10 @@ public class Main {
 
 			final File outputPath = new File("mincut.txt");
 			FileWriter fw = new FileWriter(outputPath, false);
-//			fw.write("Dataset\t\t\t\tSize\tSolution\tTime(s)\t\tFull Contraction(s)\t\tDiscovery time(s)\tError(%)\n");
-			fw.write("Dataset\t\t\t\tDiscovery time(s)\t\tcost\n");
+			fw.write("Dataset\t\t\t\tSize\tSolution\tTime(s)\t\tFull Contraction(s)\t\tDiscovery time(s)\tError(%)\n");
 			
 			 dataset.forEach((in, out) -> {
 				try{
-//					 String in = "mincut_dataset/input_random_16_50.txt";
-//					 int out = 10;
 					System.out.println("Input: " + in);
 					System.out.println("Expected output:" + out);
 	
@@ -117,20 +88,19 @@ public class Main {
 					long start = System.nanoTime();
 					long stop = 0;
 
-//					int cost = MinCut.Karger(G, k);
-//
-//					if(stop == 0)
-//						stop = System.nanoTime();
-//					long timeElapsed = stop - start;
-//					double time = timeElapsed;
-//					time = time / 1000000000;
-//
-//					double time_full_contr = MinCut.full_contraction_time(G);
+					int cost = MinCut.Karger(G, k);
+
+					if(stop == 0)
+						stop = System.nanoTime();
+					long timeElapsed = stop - start;
+					double time = timeElapsed;
+					time = time / 1000000000;
+
+					double time_full_contr = MinCut.full_contraction_time(G);
 
 					double discovery_time = MinCut.Karger_discovery_time(G, k, out);
 
-//					writeresults(fw, in, cost, time, time_full_contr, discovery_time, out);
-					writeresults(fw, in, discovery_time, out);
+					write_results(in, cost, time, time_full_contr, discovery_time, out);
 					
 				}catch (FileNotFoundException e) {}
 				catch (IOException e) {
@@ -155,7 +125,7 @@ public class Main {
 	 * @param out the correct mincut value, user to calcurate the relative error
 	 * @throws IOException
 	 */
-	static void writeresults(String in, int cost, double time, double time_full_contr, double discovery_time, int out) throws IOException {
+	static void write_results(String in, int cost, double time, double time_full_contr, double discovery_time, int out) throws IOException {
 		final File outputPath = new File("mincut.txt");
 		FileWriter fw = new FileWriter(outputPath, true);
 		String[] words = in.split("_");
@@ -182,51 +152,6 @@ public class Main {
 		System.out.println();
 
 		fw.write(dataset + "\t\t" + size + "\t\t\t" + cost + "\t\t" + time + "\t\t" + time_full_contr + "\t\t\t\t" + discovery_time + "\t\t\t   " + error + "\n");
-	}
-	
-	static void writeresults(FileWriter fw, String in, double discovery_time, int out) throws IOException {
-		String[] words = in.split("_");
-		String dataset = in.split("\\\\")[1].substring(0, in.split("\\\\")[1].lastIndexOf("_"));
-		fw.write(dataset + "\t\t" + discovery_time + "\t\t\t" + out + "\n");
-	}
-
-	static void test(){
-		Graph test = new Graph(6);
-		ArrayList<Integer> a = new ArrayList<Integer>();
-		ArrayList<Integer> b = new ArrayList<Integer>();
-		ArrayList<Integer> c = new ArrayList<Integer>();
-		ArrayList<Integer> d = new ArrayList<Integer>();
-		ArrayList<Integer> e = new ArrayList<Integer>();
-		ArrayList<Integer> f = new ArrayList<Integer>();
-		a.add(1);
-		a.add(2);
-		a.add(3);
-		b.add(0);
-		b.add(4);
-		b.add(5);
-		b.add(3);
-		c.add(0);
-		c.add(4);
-		d.add(1);
-		d.add(0);
-		d.add(4);
-		e.add(1);
-		e.add(2);
-		e.add(3);
-		e.add(5);
-		f.add(1);
-		f.add(4);
-		test.addAdjacentsNodes(0, a);
-		test.addAdjacentsNodes(1, b);
-		test.addAdjacentsNodes(2, c);
-		test.addAdjacentsNodes(3, d);
-		test.addAdjacentsNodes(4, e);
-		test.addAdjacentsNodes(5, f);
-
-		System.out.println(test.getAdjacentMatrix()+"\n");
-		System.out.println(AdjacentMatrix.copy(test.getAdjacentMatrix()));
-		test.contraction(1,4);
-		System.out.println(test.getAdjacentMatrix());
-		System.out.println(test.getNumberOfEdges());
+		fw.close();
 	}
 }

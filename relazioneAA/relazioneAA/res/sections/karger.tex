@@ -1,0 +1,292 @@
+\section{Risultati dell'algoritmo \texttt{Karger}}
+Questa sezione risponderà alle varie domande poste per l'assignement.
+
+\subsection{Domanda 1}
+Misurate i tempi di calcolo della procedura \texttt{full\_contraction} sui grafi del dataset. Mostrate i risultati con un grafico che mostri la variazione dei tempi di calcolo al variare del numero di vertici nel grafo. Confrontate i tempi misurati con la complessità asintotica di \texttt{full\_contraction}.
+
+\subsubsection{Svolgimento}
+
+\begin{center}
+	\begin{longtable}{|c|c|c|}	
+		\hline
+		\textbf{N.} & \textbf{Size} & \textbf{Full Contraction Time (s)}
+		\endfirsthead
+		{\tablename\ \thetable\ \ --\  \textit{continuazione dalla pagina precedente}} \\
+		\hline
+		\textbf{N.} & \textbf{Size} & \textbf{Full Contraction Time (s)}
+		\endhead
+		\hline {\textit{Continua nella pagina seguente}} \\
+		\endfoot  
+		\endlastfoot
+		\hline
+		1 &	6 & 1.0E-6\\
+		2 &	6 & 1.2E-6\\
+		3 &	6 & 1.7E-6\\
+		4 &	6 & 1.5E-6\\
+		5 &	10 & 3.9E-6\\
+		6 &	10 & 3.6E-6\\
+		7 &	10 & 3.7E-6\\
+		8 &	10 & 3.9E-6\\
+		9 &	25 & 2.72E-5\\
+		10 & 25	& 5.16E-5\\
+		11 & 25	& 2.3E-5\\
+		12 & 25	& 2.3E-5\\
+		13 & 50	& 1.269E-4\\
+		14 & 50	& 1.207E-4\\
+		15 & 50	& 1.136E-4\\
+		16 & 50	& 1.178E-4\\
+		17 & 75	& 3.101E-4\\
+		18 & 75	& 3.266E-4\\
+		19 & 75	& 3.47E-4\\
+		20 & 75	& 3.348E-4\\
+		21 & 100 & 6.926E-4\\
+		22 & 100 & 7.199E-4\\
+		23 & 100 & 7.257E-4\\
+		24 & 100 & 7.237E-4\\
+		25 & 125 & 0.0014224\\
+		26 & 125 & 0.0014538\\
+		27 & 125 & 0.0015773\\
+		28 & 125 & 0.0014295\\
+		29 & 150 & 0.0030876\\
+		30 & 150 & 0.0028798\\
+		31 & 150 & 0.0029867\\
+		32 & 150 & 0.0030172\\
+		33 & 175 & 0.0046466\\
+		34 & 175 & 0.0044992\\
+		35 & 175 & 0.0052528\\
+		36 & 175 & 0.0046107\\
+		37 & 200 & 0.0072138\\
+		38 & 200 & 0.0066759\\
+		39 & 200 & 0.0072141\\
+		40 & 200 & 0.0075121\\
+		\hline
+		\caption{Risultati della procedura \textit{Full Contraction} rispetto alla domanda 1}
+		\label{fc-results}
+	\end{longtable}
+\end{center}\vspace{-40pt}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{avg_fc_time}
+	\caption{Analisi asintotica di \texttt{full\_contraction}}
+	\label{fc-confronto}
+\end{figure}
+
+\texttt{full\_contraction} ha una complessità di \comp{n^2}, che è esattamente quello che viene evidenziato da Figura~\ref{fc-results}.
+
+\subsection{Domanda 2}
+Misurate i tempi di calcolo dell'algoritmo di Karger sui grafi del dataset, usando un numero di ripetizioni che garantisca una probabilità minore o uguale a $\frac{1}{n}$ di sbagliare. Mostrate i risultati con un grafico che mostri la variazione dei tempi di calcolo al variare del numero di vertici nel grafo. Confrontate i tempi misurati con la complessità asintotica dell'algoritmo.
+
+\subsubsection{Svolgimento}
+
+\begin{center}
+	\begin{longtable}{|c|c|c|c|}	
+		\hline
+		\textbf{N.} & \textbf{Size} & \textbf{Karger solution} & \textbf{Karger Time (s)}
+		\endfirsthead
+		{\tablename\ \thetable\ \ --\  \textit{continuazione dalla pagina precedente}} \\
+		\hline
+		\textbf{N.} & \textbf{Size} & \textbf{Karger solution} & \textbf{Karger Time (s)}
+		\endhead
+		\hline {\textit{Continua nella pagina seguente}} \\
+		\endfoot  
+		\endlastfoot
+		\hline
+		1 & 6 & 2 & 4.59E-5 \\
+		2 & 6 & 1 & 4.97E-5 \\
+		3 & 6 & 3 & 5.39E-5 \\
+		4 & 6 & 4 & 5.37E-5 \\
+		5 & 10 & 4 & 5.103E-4 \\
+		6 & 10 & 3 & 4.918E-4 \\
+		7 & 10 & 2 & 4.965E-4 \\
+		8 & 10 & 1 & 4.971E-4 \\
+		9 & 25 & 7 & 0.0306304 \\
+		10 & 25 & 6 & 0.0957754 \\		
+		11 & 25 & 8 & 0.0318386 \\		
+		12 & 25 & 9 & 0.0320083 \\		
+		13 & 50 & 15 & 0.7410805 \\		
+		14 & 50 & 16 & 0.7322812 \\		
+		15 & 50 & 14 & 0.6886227 \\		
+		16 & 50 & 10 & 0.7194658 \\		 
+		17 & 75 & 19 & 4.5581846 \\		
+		18 & 75 & 15 & 4.7667614 \\		
+		19 & 75 & 18 & 4.7321971 \\		
+		20 & 75 & 16 & 4.6194424 \\		
+		21 & 100 & 22 & 18.4590746 \\		
+		22 & 100 & 23 & 18.3235051 \\		
+		23 & 100 & 19 & 19.2442024 \\		
+		24 & 100 & 24 & 19.2161447 \\		
+		25 & 125 & 34 & 58.8190144 \\		
+		26 & 125 & 29 & 57.457255 \\		
+		27 & 125 & 36 & 70.1068629 \\		
+		28 & 125 & 31 & 58.5128556 \\		
+		29 & 150 & 37 & 164.4596518 \\		
+		30 & 150 & 35 & 159.8519787 \\		 	
+		31 & 150 & 41 & 164.7340277 \\		
+		32 & 150 & 39 & 162.4446075 \\		
+		33 & 175 & 42 & 354.6868445 \\		
+		34 & 175 & 45 & 355.8195941 \\		 
+		35 & 175 & 53 & 376.6771329 \\		   
+		36 & 175 & 43 & 339.6508817 \\		
+		37 & 200 & 54 & 730.3265273 \\		
+		38 & 200 & 52 & 685.7037242 \\		
+		39 & 200 & 51 & 708.7966211 \\		
+		40 & 200 & 61 & 730.9270492 \\			
+		\hline
+		\caption{Risultati della procedura \textit{Karger} rispetto alla domanda 2}
+		\label{k-results}
+	\end{longtable}
+\end{center}\vspace{-40pt}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{avg_time}
+	\caption{Analisi asintotica di \texttt{Karger}}
+	\label{k-confronto}
+\end{figure}
+
+La procedura \texttt{Karger} ha una complessità di\comp{n^4 \log n}, infatti è possibile vedere in Figura~\ref{k-results} come rispetto a Figura~\ref{fc-results}, che si riferisce ad una curva asintotica di \comp{n^2}, la inizi ad impennarsi circa con grafi di 100 nodi, ma in modo più ripido.
+
+\subsection{Domanda 3}
+Misurate il \textit{discovery time} dell'algoritmo di Karger sui grafi del dataset. Il discovery time è il momento (in secondi) in cui l'algoritmo trova per la prima volta il taglio di costo mimimo.  Confrontate il discovery time con il tempo di esecuzione complessivo per ognuno dei grafi nel dataset.
+
+\subsubsection{Svolgimento}
+
+\begin{center}
+	\begin{longtable}{|c|c|c|c|}	
+		\hline
+		\textbf{N.} & \textbf{Size} & \textbf{Karger Tme (s)} & \textbf{Discovery Time (s)}
+		\endfirsthead
+		{\tablename\ \thetable\ \ --\  \textit{continuazione dalla pagina precedente}} \\
+		\hline
+		\textbf{N.} & \textbf{Size} & \textbf{Karger Time (s)} & \textbf{Discovery Time (s)}
+		\endhead
+		\hline {\textit{Continua nella pagina seguente}} \\
+		\endfoot  
+		\endlastfoot
+		\hline
+		1 & 6 & 4.59E-5	 & 1.26E-5 \\			    
+		2 & 6 & 4.97E-5	 & 3.7E-6 \\			   	
+		3 & 6 & 5.39E-5	 & 9.7E-6 \\		   		
+		4 & 6 & 5.37E-5	 & 3.2E-6 \\			    
+		5 & 10 & 5.103E-4 & 1.284E-4 \\	   		
+		6 & 10 & 4.918E-4 & 5.8E-6 \\			  	
+		7 & 10 & 4.965E-4 & 2.75E-5 \\			    
+		8 & 10 & 4.971E-4 & 5.9E-6 \\			   	
+		9 & 25 & 0.0306304 & 7.73E-4 \\
+		10 & 25 & 0.0957754 & 0.0115143 \\		   	
+		11 & 25 & 0.0318386 & 0.0077459 \\			
+		12 & 25 & 0.0320083 & 0.0040907 \\	  		
+		13 & 50 & 0.7410805 & 0.0138128 \\		    
+		14 & 50 & 0.7322812 & 0.0478224 \\	    	
+		15 & 50 & 0.6886227 & 0.003738 \\	  		
+		16 & 50 & 0.7194658 & 0.0149178 \\	        
+		17 & 75 & 4.5581846 & 0.0762589 \\	   		
+		18 & 75 & 4.7667614 & 0.0404856 \\	  		
+		19 & 75 & 4.7321971 & 0.0265994 \\	   		
+		20 & 75 & 4.6194424 & 0.1123946 \\		  	
+		21 & 100 & 18.4590746 & 0.1588621 \\	 
+		22 & 100 & 18.3235051 & 0.0822596 \\	 
+		23 & 100 & 19.2442024 & 0.0168746 \\		 
+		24 & 100 & 19.2161447 & 0.0251183 \\		 
+		25 & 125 & 58.8190144 & 0.4463958 \\	  
+		26 & 125 & 57.457255 & 0.1294754 \\		
+		27 & 125 & 70.1068629 & 1.0395953 \\		 
+		28 & 125 & 58.5128556 & 0.8252303 \\		 
+		29 & 150 & 164.4596518 & 6.6862347 \\	  
+		30 & 150 & 159.8519787 & 0.9646022 \\	    
+		31 & 150 & 164.7340277 & 0.5240023 \\		 
+		32 & 150 & 162.4446075 & 6.4803055 \\		 
+		33 & 175 & 354.6868445 & 3.0379762 \\		 
+		34 & 175 & 355.8195941 & 1.7371626 \\	   	
+		35 & 175 & 376.6771329 & 22.2364104 \\	  	 
+		36 & 175 & 339.6508817 & 2.4007981 \\	 
+		37 & 200 & 730.3265273 & 7.7587212 \\		 
+		38 & 200 & 685.7037242 & 0.6157363 \\	  
+		39 & 200 & 708.7966211 & 3.3346295 \\	  
+		40 & 200 & 730.9270492 & 12.4704872 \\	
+		\hline
+		\caption{Risultati della procedura \textit{Karger} rispetto alla domanda 3}
+		\label{dt-results}
+	\end{longtable}
+\end{center}\vspace{-40pt}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{avg_disc_time}
+	\caption{Analisi del \texttt{discovery\_time}}
+	\label{dt-confronto}
+\end{figure}
+
+Dato che l'algoritmo di Karger è un algoritmo randomizzato, non è possibile determinare quando e se otterrà la soluzione corretta, dunque è normale che in Figura~\ref{dt-confronto} l'andamento non sia regolare.\\
+\'E importante invece notare come il \textit{discovery\_time} sia almeno 10 volte minore del tempo di esecuzione di \texttt{Kager}, questo vuol dire che la soluzione corretta viene trovata già prima delle $\frac{k}{10}$ iterazioni, con $k = n^2 \log n$. da ciò si può dedurre che già dopo $\frac{k}{10}$ iterazioni la probabilità di trovare la soluzione corretta è già molto alta.
+
+\subsection{Domanda 4}
+Per ognuno dei grafi del dataset, riportate il risultato risultato ottenuto dalla vostra implementazione, la soluzione attesa e l'errore relativo calcolato come $ \frac{\textrm{SoluzioneTrovata}-\textrm{SoluzioneAttesa}}{\textrm{SoluzioneAttesa}}$.
+
+\subsubsection{Svolgimento}
+
+\begin{center}
+	\begin{longtable}{|c|c|c|c|c|}	
+		\hline
+		\textbf{N.} & \textbf{Size} & \textbf{Karger Solution} & \textbf{Solution} & \textbf{Error (\%)}
+		\endfirsthead
+		{\tablename\ \thetable\ \ --\  \textit{continuazione dalla pagina precedente}} \\
+		\hline
+		\textbf{N.} & \textbf{Size} & \textbf{Karger Solution} & \textbf{Solution} & \textbf{Error (\%)}
+		\endhead
+		\hline {\textit{Continua nella pagina seguente}} \\
+		\endfoot  
+		\endlastfoot
+		\hline
+		1 & 6 & 2 & 2 & 0.0 \\
+		2 & 6 & 1 & 1 & 0.0 \\
+		3 & 6 & 3 & 3 & 0.0 \\
+		4 & 6 & 4 & 4 & 0.0 \\
+		5 & 10 & 4 & 4 & 0.0 \\
+		6 & 10 & 3 & 3 & 0.0 \\
+		7 & 10 & 2 & 2 & 0.0 \\
+		8 & 10 & 1 & 1 & 0.0 \\
+		9 & 25 & 7 & 7 & 0.0 \\
+		10 & 25 & 6 & 6 & 0.0 \\
+		11 & 25 & 8 & 8 & 0.0 \\
+		12 & 25 & 9 & 9 & 0.0 \\
+		13 & 50 & 15 & 15 & 0.0 \\
+		14 & 50 & 16 & 16 & 0.0 \\
+		15 & 50 & 14 & 14 & 0.0 \\
+		16 & 50 & 10 & 10 & 0.0 \\
+		17 & 75 & 19 & 19 & 0.0 \\
+		18 & 75 & 15 & 15 & 0.0 \\
+		19 & 75 & 18 & 18 & 0.0 \\
+		20 & 75 & 16 & 16 & 0.0 \\
+		21 & 100 & 22 & 22 & 0.0 \\
+		22 & 100 & 23 & 23 & 0.0 \\
+		23 & 100 & 19 & 19 & 0.0 \\
+		24 & 100 & 24 & 24 & 0.0 \\
+		25 & 125 & 34 & 34 & 0.0 \\
+		26 & 125 & 29 & 29 & 0.0 \\
+		27 & 125 & 36 & 36 & 0.0 \\
+		28 & 125 & 31 & 31 & 0.0 \\
+		29 & 150 & 37 & 37 & 0.0 \\
+		30 & 150 & 35 & 35 & 0.0 \\
+		31 & 150 & 41 & 41 & 0.0 \\
+		32 & 150 & 39 & 39 & 0.0 \\
+		33 & 175 & 42 & 42 & 0.0 \\
+		34 & 175 & 45 & 45 & 0.0 \\
+		35 & 175 & 53 & 53 & 0.0 \\
+		36 & 175 & 43 & 43 & 0.0 \\
+		37 & 200 & 54 & 54 & 0.0 \\
+		38 & 200 & 52 & 52 & 0.0 \\
+		39 & 200 & 51 & 51 & 0.0 \\
+		40 & 200 & 61 & 61 & 0.0 \\
+		\hline
+		\caption{Risultati della procedura \textit{Karger} rispetto alla domanda 4}
+		\label{error-results}
+	\end{longtable}
+\end{center}\vspace{-40pt}
+
+Abbiamo deciso di eseguire l'algoritmo di Karger senza alcun tipo di timeout, dato che coi grafi più grandi richiedeva neanche 15 minuti di tempo, e per tutti i grafi la soluzione corretta è stata trovata, avendo dunque un errore relativo sempre dello 0\%.
+
+\section{Conclusioni}
+Nella realizzazione dell'elaborato abbiamo riscontrato qualche difficoltà nel cercare di capire quale fosse il modello per rappresentare i grafi più efficiente per eseguire l'algoritmo di Karger, in particolar modo per quanto riguardava la fase di contrazione dei lati, dato che quest'ultima doveva essere \comp{n}. Abbiamo dunque deciso di creare un modello che occupasse più memoria, attraverso le matrici di adiacenza, in favore di una complessità migliore.\\
+\'E stato inoltre interessante vedere come la soluzione ottima venisse trovata quasi sempre tra le prime $\frac{k}{10}$ iterazioni circa.
