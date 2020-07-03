@@ -48,10 +48,10 @@ Per lo svolgimento di questo \emph{assignment}, come per il precedente, è stato
 Dato che l'algoritmo di Karger richiedere sopratutto di creare grafi nuovi, manipolando i lati del grafo precedentemente creato, si è rivelato necessario creare un modello che potesse rimuovere ed accedere ai lati di un grafo in \comp{1}. Per questo, abbiamo utilizzato una matrice di adiacenza nella rappresentazione dei grafi. Siamo consapevoli che, non trattandosi di grafi completi, la matrice di adiacenza non sarà quasi mai densamente popolata, però ci è sembrato un buon compromesso per mantenere una complessità costante.\\
 Inoltre, per permettere all'algoritmo di Karger di selezionare in modo random un lato del grafo, abbiamo comunque deciso di utilizzare una lista di lati che ad ogni iterazione di \texttt{full\_contraction} viene aggiornata. \'E stato scelto di utilizzare una lista di lati e non solo la matrice di adiacenza per la scelta del lato random perché, nel caso in cui non avessimo usato la lista di lati, pescare un lato avrebbe richiesto l'utilizzo di un ciclo \texttt{while(finché non trovi un valere non vuoto nella matrice)}, che avrebbe potuto chiedere parecchio tempo.\\
 La lista di lati, invece che implementarla con un \texttt{ArrayList}, l'abbiamo implementata usando una \texttt{LinkedList}, che permette di eliminare gli elementi della lista in \comp{1}, requisito fondamentale per mantenere la corretta complessità dell'algoritmo di \texttt{Karger}.\\ 
-Come specificato nel precedente paragrafo, nell'implementazione dei tre algoritmi si è cercato di creare meno oggetti possibile usando quasi esclusivamente riferimenti. 
+Come specificato nel precedente paragrafo, nell'implementazione dell'algoritmo si è cercato di creare meno oggetti possibile usando quasi esclusivamente riferimenti. 
 
 \subsection{Modello}
-Le componenti del modello, vale a dire le classi presenti all'interno del \texttt{package} chiamato \texttt{lab3.model}, comprendono tutte le strutture dati utilizzate nella risoluzione dei tre problemi assegnati. 
+Le componenti del modello, vale a dire le classi presenti all'interno del \texttt{package} chiamato \texttt{lab3.model}, comprendono tutte le strutture dati utilizzate nella risoluzione del problema assegnato. 
 \begin{itemize}
 	\item \label{adjmat}\texttt{AdjacentMatrix}: matrice di adiacenza usata per rappresentare i grafi, che si presenta come una normale matrice $n\times n$ simmetrica rispetto alla sua diagonale nulla\footnote{poiché non esistono cappi}. L'algoritmo \texttt{Karger}, difatti, la tratta come tale. In verità è stata implementata come matrice triangolare inferiore, contenendo \texttt{n - 1} array di lunghezza crescente: questa scelta è stata fatta per risparmiare memoria, evitando di costruire una matrice quadrata. Tale classe presenta i metodi standard \texttt{get(u,v)} e \texttt{set(u,v)}, per ottenere ed impostare il peso del lato (u,v), ed un motodo \texttt{getMinAdjacentVertexWeightIndex(v)} per ottenere il lato con peso minore che ha per estremo il vertice \textit{v}. La matrice di adiacenza inoltre possiede una lista di lati, per permettere alla funzione \texttt{full\_contraction} tdi scegliere casualmente un lato in \comp{n};
 	\item \texttt{Edge}: classe utilizzata da \texttt{AdjacentMatrix} esclusivamente per restituire un lato del grafo in modo random;
@@ -66,7 +66,7 @@ Il package \texttt{lab3.algorithm} contiene un'unica classe, \texttt{MinCut}, ch
 \end{itemize}
 
 \subsection{Main}
-Il package \texttt{lab3.main} contiene la classe \texttt{Main}, responsabile dell'esecuzione degli algoritmi. All'interno vi sono tre funzioni:
+Il package \texttt{lab3.main} contiene la classe \texttt{Main}, responsabile dell'esecuzione degli algoritmi. All'interno vi è solo:
 \begin{itemize}
 	\item \texttt{Main}: si occupa di eseguire il calcolo dell'algoritmo di Karger, calcolare il tempo di esecuzione del \textit{Discovery Time} e della prima iterata di \texttt{full\_contraction}. Infine chiama la funzione \texttt{write\_results} per calcolare l'errore relativo tra la soluzione trovata da \texttt{karger} e la soluzione corretta ed infine scrivere tutti i risultati all'interno di \texttt{mincut.txt};
 \end{itemize}
