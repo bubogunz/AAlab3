@@ -219,7 +219,36 @@ Misurate il \textit{discovery time} dell'algoritmo di Karger sui grafi del datas
 \end{figure}
 
 Dato che l'algoritmo di Karger è un algoritmo randomizzato, non è possibile determinare quando e se otterrà la soluzione corretta, dunque è normale che in Figura~\ref{dt-confronto} l'andamento non sia regolare.\\
-\'E importante invece notare come il \textit{discovery\_time} sia almeno 10 volte minore del tempo di esecuzione di \texttt{Kager}, questo vuol dire che la soluzione corretta viene trovata già prima delle $\frac{k}{10}$ iterazioni, con $k = n^2 \log n$. da ciò si può dedurre che già dopo $\frac{k}{10}$ iterazioni la probabilità di trovare la soluzione corretta è già molto alta.
+\'E importante invece notare come il \textit{discovery\_time} sia in generale almeno 10 volte minore del tempo di esecuzione di \texttt{Kager}, questo vuol dire che la soluzione corretta viene trovata già prima delle $\frac{k}{10}$ iterazioni, con $k = n^2 \log n$. da ciò si può dedurre che già dopo $\frac{k}{10}$ iterazioni la probabilità di trovare la soluzione corretta è già molto alta.\\
+In particolare è interessante vedere in Figura~\ref{dt-confronto1}, Figura~\ref{dt-confronto2}, Figura~\ref{dt-confronto3} e Figura~\ref{dt-confronto4} la differenza tra \textit{discovery\_time} ed il tempo di esecuzione di \texttt{Karger} e di come il \textit{discovery\_time} sembri quasi lineare, rispetto a \texttt{Karger} che invece è esponenziale.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{tot_disc_6-10}
+	\caption{Analisi del \texttt{discovery\_time}}
+	\label{dt-confronto1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{tot_disc_25-50}
+	\caption{Analisi del \texttt{discovery\_time}}
+	\label{dt-confronto2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{tot_disc_75-100}
+	\caption{Analisi del \texttt{discovery\_time}}
+	\label{dt-confronto3}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{tot_disc_all}
+	\caption{Analisi del \texttt{discovery\_time}}
+	\label{dt-confronto4}
+\end{figure}
 
 \subsection{Domanda 4}
 Per ognuno dei grafi del dataset, riportate il risultato risultato ottenuto dalla vostra implementazione, la soluzione attesa e l'errore relativo calcolato come $ \frac{\textrm{SoluzioneTrovata}-\textrm{SoluzioneAttesa}}{\textrm{SoluzioneAttesa}}$.
