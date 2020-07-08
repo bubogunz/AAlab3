@@ -9,13 +9,13 @@ Misurate i tempi di calcolo della procedura \texttt{full\_contraction} sui grafi
 \begin{center}
 	\begin{longtable}{|c|c|c|}	
 		\hline
-		\textbf{N.} & \textbf{Size} & \textbf{Full Contraction Time (s)}
+		\textbf{N.} & \textbf{Size} & \textbf{Full Contraction Time (s)} \\ \hline
 		\endfirsthead
-		{\tablename\ \thetable\ \ --\  \textit{continuazione dalla pagina precedente}} \\
+		\multicolumn{3}{|c|}{\tablename\ \thetable\ \ --\  \textit{continuazione dalla pagina precedente}} \\
 		\hline
-		\textbf{N.} & \textbf{Size} & \textbf{Full Contraction Time (s)}
+		\textbf{N.} & \textbf{Size} & \textbf{Full Contraction Time (s)} \\ \hline
 		\endhead
-		\hline {\textit{Continua nella pagina seguente}} \\
+		\hline \multicolumn{3}{|c|}{\textit{Continua nella pagina seguente}} \\
 		\endfoot  
 		\endlastfoot
 		\hline
@@ -72,23 +72,49 @@ Misurate i tempi di calcolo della procedura \texttt{full\_contraction} sui grafi
 	\label{fc-confronto}
 \end{figure}
 
-\texttt{full\_contraction} ha una complessità di \comp{n^2}, che è esattamente quello che viene evidenziato da Figura~\ref{fc-results}.
+\texttt{full\_contraction} ha una complessità di \comp{n^2}, che è ben visibile dal grafico in Figura 3.
 
 \subsection{Domanda 2}
 Misurate i tempi di calcolo dell'algoritmo di Karger sui grafi del dataset, usando un numero di ripetizioni che garantisca una probabilità minore o uguale a $\frac{1}{n}$ di sbagliare. Mostrate i risultati con un grafico che mostri la variazione dei tempi di calcolo al variare del numero di vertici nel grafo. Confrontate i tempi misurati con la complessità asintotica dell'algoritmo.
 
 \subsubsection{Svolgimento}
-
+\subsubsection*{Calcolo del numero di iterazioni necessarie}
+\begin{itemize}
+	\item Analisi di una singola iterazione di FC.\vspace{-5pt}
+	\begin{itemize}
+		\item Sia $t = |$ min-cut $| = C$
+		\item $E_i = $ al passo $i-$esimo di FC;
+		\item $Pr($successo di FC\footnote{cioè non becco nessun arco di taglio minimo $C$})$\,\geq Pr\left(\mathlarger{\bigcap}_{i=1}^{n-2} E_1\right)$.\\
+		\begin{itemize}
+		\item $Pr(E_1) \geq 1- \frac{t}{t\frac{n}{2}} = 1 - \dfrac{2}{n}$. Quindi la probabilità di non beccare un arco del min-cut alla prima iterazione di FC è buona. Successo con alta probabilità.
+		\item $Pr(E_2|E_1) \geq 1 - \dfrac{t}{t \frac{n-1}{2}}$
+		\item $\quad\vdots$
+		\item $Pr(E_i|E_1\cap E_2\cap ...\cap E_{i-1}) \geq 1 - \dfrac{t}{t \frac{(n-i+1)}{2}} = 1 - \dfrac{2}{n-i+1}$
+		\end{itemize}
+		$\Rightarrow Pr($successo di FC$) \geq Pr\left(\mathlarger{\bigcap}_{i=1}^{n-2} E_1\right) \geq \mathlarger{\prod}_{i=1}^{n-2}\left(1 - \dfrac{2}{n-i+1}\right) = Pr\left(\mathlarger{\bigcap}_{i=1}^{n-2} E_1\right) \dfrac{n-i-1}{n-i+1} =$\eqcapo 
+		$ = \dfrac{(n-2)}{n}\cdot\dfrac{(n-3)}{n-1}\cdot\dfrac{(n-4)}{n-2}\cdot\,\cdots\,\cdot\dfrac{3}{5}\cdot\dfrac{2}{4}\cdot\dfrac{1}{3} = \dfrac{2}{n(n-1)} \geq \dfrac{2}{n^2}$\eqcapo
+		Quindi, eseguendo FC una sola volta, la probabilità di non beccare un arco appartenente al min-cut è almeno di $\dfrac{2}{n^2}$. 
+		\end{itemize}
+		\item Dobbiamo calcolare la probabilità che le $k$ iterazioni di FC non accumulino la taglia del min-cut.
+	\begin{itemize}
+		\item $Pr($le $k$ FC non accumulano la taglia del min-cut$) \leq \left(1 - \dfrac{2}{n^2}\right)^k$ (evento insuccesso)\\
+		Vogliamo che questa probabilità sia $\leq \dfrac{1}{n}$. Quindi scelgo $k =\dfrac{n^2}{2}\log n$. Dimostriamo che è sufficiente.
+		\begin{itemize}
+			\item Infatti 
+			$\left(\left( 1- \dfrac{2}{n^2}\right)^{\frac{n^2}{2}}\right)^{\log n} \leq e^{-\log n} = \dfrac{1}{n}$.
+		\end{itemize}
+	\end{itemize}
+	\item Quindi con probabilità almeno $\dfrac{1}{n}$ l'algoritmo di Karger accumula la taglia del min-cut.
+\end{itemize}
 \begin{center}
 	\begin{longtable}{|c|c|c|c|}	
 		\hline
 		\textbf{N.} & \textbf{Size} & \textbf{Karger solution} & \textbf{Karger Time (s)}
 		\endfirsthead
-		{\tablename\ \thetable\ \ --\  \textit{continuazione dalla pagina precedente}} \\
-		\hline
-		\textbf{N.} & \textbf{Size} & \textbf{Karger solution} & \textbf{Karger Time (s)}
-		\endhead
-		\hline {\textit{Continua nella pagina seguente}} \\
+		\multicolumn{4}{|c|}{\tablename\ \thetable\ \ --\  \textit{continuazione dalla pagina precedente}} \\ \hline
+		\textbf{N.} & \textbf{Size} & \textbf{Karger solution} & \textbf{Karger Time (s)} \\ \hline
+		\endhead \hline 
+		\multicolumn{4}{|c|}{\textit{Continua nella pagina seguente}} \\
 		\endfoot  
 		\endlastfoot
 		\hline
@@ -145,7 +171,23 @@ Misurate i tempi di calcolo dell'algoritmo di Karger sui grafi del dataset, usan
 	\label{k-confronto}
 \end{figure}
 
-La procedura \texttt{Karger} ha una complessità di\comp{n^4 \log n}, infatti è possibile vedere in Figura~\ref{k-results} come rispetto a Figura~\ref{fc-results}, che si riferisce ad una curva asintotica di \comp{n^2}, la inizi ad impennarsi circa con grafi di 100 nodi, ma in modo più ripido.
+La procedura \texttt{Karger} ha una complessità di\comp{n^4 \log n}, infatti è possibile vedere in Figura 4 come rispetto a Figura 3\footnote{che si riferisce ad una curva asintotica di \comp{n^2}} la curva inizia ad impennarsi fin da subito ma in modo più ripido.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{avg_time_6-100}
+	\caption{Analisi asintotica di \texttt{Karger} per i grafi da 6 a 100 nodi}
+	\label{k-confronto1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{avg_time_125-200}
+	\caption{Analisi asintotica di \texttt{Karger} per i grafi da 125 a 200 nodi}
+	\label{k-confronto2}
+\end{figure}
+
+La procedura \texttt{Karger} ha una complessità di\comp{n^4 \log n}, che è possibile analizzare molto bene attraverso Figura~\ref{k-confronto1} e Figura~\ref{k-confronto2}. Infatti è molto evidente come la curva dei grafici si impenni molto più velocemente rispetto \texttt{full\_contraction} in Figura~\ref{fc-confronto}.
 
 \subsection{Domanda 3}
 Misurate il \textit{discovery time} dell'algoritmo di Karger sui grafi del dataset. Il discovery time è il momento (in secondi) in cui l'algoritmo trova per la prima volta il taglio di costo mimimo.  Confrontate il discovery time con il tempo di esecuzione complessivo per ognuno dei grafi nel dataset.
@@ -155,13 +197,12 @@ Misurate il \textit{discovery time} dell'algoritmo di Karger sui grafi del datas
 \begin{center}
 	\begin{longtable}{|c|c|c|c|}	
 		\hline
-		\textbf{N.} & \textbf{Size} & \textbf{Karger Tme (s)} & \textbf{Discovery Time (s)}
+		\textbf{N.} & \textbf{Size} & \textbf{Karger Tme (s)} & \textbf{Discovery Time (s)} \\ \hline
 		\endfirsthead
-		{\tablename\ \thetable\ \ --\  \textit{continuazione dalla pagina precedente}} \\
-		\hline
+		\multicolumn{4}{|c|}{\tablename\ \thetable\ \ --\  \textit{continuazione dalla pagina precedente}} \\ \hline
 		\textbf{N.} & \textbf{Size} & \textbf{Karger Time (s)} & \textbf{Discovery Time (s)}
 		\endhead
-		\hline {\textit{Continua nella pagina seguente}} \\
+		\hline \multicolumn{4}{|c|}{\textit{Continua nella pagina seguente}} \\ 
 		\endfoot  
 		\endlastfoot
 		\hline
@@ -219,7 +260,7 @@ Misurate il \textit{discovery time} dell'algoritmo di Karger sui grafi del datas
 \end{figure}
 
 Dato che l'algoritmo di Karger è un algoritmo randomizzato, non è possibile determinare quando e se otterrà la soluzione corretta, dunque è normale che in Figura~\ref{dt-confronto} l'andamento non sia regolare.\\
-\'E importante invece notare come il \textit{discovery\_time} sia in generale almeno 10 volte minore del tempo di esecuzione di \texttt{Kager}, questo vuol dire che la soluzione corretta viene trovata già prima delle $\frac{k}{10}$ iterazioni, con $k = n^2 \log n$. da ciò si può dedurre che già dopo $\frac{k}{10}$ iterazioni la probabilità di trovare la soluzione corretta è già molto alta.\\
+\'E importante invece notare come il \textit{discovery\_time} sia in generale almeno 10 volte minore del tempo di esecuzione di \texttt{Kager}, questo vuol dire che la soluzione corretta viene trovata già prima delle $\frac{k}{10}$ iterazioni, con $k = n^2 \log n$. Da ciò si può dedurre che già dopo $\frac{k}{10}$ iterazioni la probabilità di trovare la soluzione corretta è già molto alta.\\
 In particolare è interessante vedere in Figura~\ref{dt-confronto1}, Figura~\ref{dt-confronto2}, Figura~\ref{dt-confronto3} e Figura~\ref{dt-confronto4} la differenza tra \textit{discovery\_time} ed il tempo di esecuzione di \texttt{Karger} e di come il \textit{discovery\_time} sembri quasi lineare, rispetto a \texttt{Karger} che invece è esponenziale.
 
 \begin{figure}[H]
@@ -260,11 +301,11 @@ Per ognuno dei grafi del dataset, riportate il risultato risultato ottenuto dall
 		\hline
 		\textbf{N.} & \textbf{Size} & \textbf{Karger Solution} & \textbf{Solution} & \textbf{Error (\%)}
 		\endfirsthead
-		{\tablename\ \thetable\ \ --\  \textit{continuazione dalla pagina precedente}} \\
+		\multicolumn{5}{|c|}{\tablename\ \thetable\ \ --\  \textit{continuazione dalla pagina precedente}} \\
 		\hline
-		\textbf{N.} & \textbf{Size} & \textbf{Karger Solution} & \textbf{Solution} & \textbf{Error (\%)}
+		\textbf{N.} & \textbf{Size} & \textbf{Karger Solution} & \textbf{Solution} & \textbf{Error (\%)} \\ \hline
 		\endhead
-		\hline {\textit{Continua nella pagina seguente}} \\
+		\hline \multicolumn{5}{|c|}{\textit{Continua nella pagina seguente}} \\
 		\endfoot  
 		\endlastfoot
 		\hline
@@ -318,4 +359,5 @@ Abbiamo deciso di eseguire l'algoritmo di Karger senza alcun tipo di timeout, da
 
 \section{Conclusioni}
 Nella realizzazione dell'elaborato abbiamo riscontrato qualche difficoltà nel cercare di capire quale fosse il modello per rappresentare i grafi più efficiente per eseguire l'algoritmo di Karger, in particolar modo per quanto riguardava la fase di contrazione dei lati, dato che quest'ultima doveva essere \comp{n}. Abbiamo dunque deciso di creare un modello che occupasse più memoria, attraverso le matrici di adiacenza, in favore di una complessità migliore.\\
-\'E stato inoltre interessante vedere come la soluzione ottima venisse trovata quasi sempre tra le prime $\frac{k}{10}$ iterazioni circa.
+\'E stato inoltre interessante vedere come la soluzione ottima venisse trovata quasi sempre tra le prime $\frac{k}{10}$ iterazioni circa.\\
+Ci riteniamo soddisfatti del lavoro svolto, poiché siamo riusciti ad evitare l'uso di un \textit{timeout}: questo ci fa capire che siamo riusciti a rispettare la complessità, trovando nel 100\% dei dataset forniti la soluzione aspettata in tempi relativamente brevi, all'incirca 12 minuti per i grafi più grandi da 200 nodi.
