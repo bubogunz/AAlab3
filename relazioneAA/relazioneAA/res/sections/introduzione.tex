@@ -44,10 +44,12 @@ Per lo svolgimento di questo \emph{assignment}, come per il precedente, è stato
 \end{itemize}
 
 \section{Scelte implementative}
+
 Dato che l'algoritmo di Karger richiedere soprattutto di creare grafi nuovi manipolando i lati del grafo precedentemente creato, si è rivelato necessario creare un modello che potesse rimuovere ed accedere ai lati di un grafo in \comp{1}. Per questo abbiamo utilizzato una matrice di adiacenza nella rappresentazione dei grafi. Siamo consapevoli che non trattandosi di grafi completi, la matrice di adiacenza non sarà quasi mai densamente popolata, però ci è sembrato un buon compromesso per mantenere una complessità costante. Abbiamo mitigato questa \quotes{problematica} adottando una matrice triangolare inferiore che però viene utilizzata come se fosse una normale matrice $n\times n$, con $n = |V|$. \\
 Inoltre, per permettere all'algoritmo di Karger di selezionare in modo random un lato del grafo, abbiamo comunque deciso di utilizzare una lista di lati che ad ogni iterazione di \texttt{full\_contraction} viene aggiornata. \'E stato scelto di utilizzare una lista di lati e non solo la matrice di adiacenza per la scelta del lato random perché, nel caso in cui non avessimo usato la lista di lati, pescare un lato avrebbe richiesto l'utilizzo di un ciclo \texttt{while(finché non trovi un valore non vuoto nella matrice)}, che avrebbe potuto chiedere parecchio tempo.\\
 La lista di lati, piuttosto di utilizzare un \texttt{ArrayList}, l'abbiamo implementata usando una \texttt{LinkedList}, che permette di eliminare i gli elementi della lista in \comp{1}, requisito fondamentale per mantenere la corretta complessità dell'algoritmo di \texttt{Karger}.\\ 
 Come specificato nel precedente paragrafo, nell'implementazione dei tre algoritmi si è cercato di creare meno oggetti possibile usando quasi esclusivamente riferimenti. 
+
 
 \subsection{Algoritmo di Karger}
 L'algoritmo di Karger si può riassumere nei tre seguenti passaggi:
@@ -62,22 +64,26 @@ Ciò funziona con probabilità bassissima, che però può essere amplificato rip
 \texttt{KARGER} ripete \texttt{FULL\_CONTRACTION} $k$ volte per ridurre la probabilità di errore.
 
 \subsection{Modello}
-Le componenti del modello, vale a dire le classi presenti all'interno del \texttt{package} chiamato \texttt{lab2.model}, comprendono tutte le strutture dati utilizzate nella risoluzione dei tre problemi assegnati. 
+Le componenti del modello, vale a dire le classi presenti all'interno del \texttt{package} chiamato \texttt{lab3.model}, comprendono tutte le strutture dati utilizzate nella risoluzione del problema assegnato. 
 \begin{itemize}
+
 	\item \label{adjmat}\texttt{AdjacentMatrix}: matrice di adiacenza usata per rappresentare i grafi, che si presenta come una normale matrice $n\times n$ simmetrica rispetto alla sua diagonale nulla\footnote{poiché non esistono cappi}. L'algoritmo \texttt{Karger}, difatti, la tratta come tale. In verità è stata implementata come matrice triangolare inferiore, contenendo \texttt{n - 1} array di lunghezza crescente: questa scelta è stata fatta per risparmiare memoria, evitando di costruire una matrice quadrata. Tale classe presenta i metodi standard \texttt{get(u,v)} e \texttt{set(u,v)}, per ottenere ed impostare il peso del lato (u,v), ed un motodo \texttt{getMinAdjacentVertexWeightIndex(v)} per ottenere il lato con peso minore che ha per estremo il vertice \textit{v}. La matrice di adiacenza inoltre possiede una lista di lati, per permettere alla funzione \texttt{full\_contraction} di scegliere casualmente un lato in \comp{n};
+
 	\item \texttt{Edge}: classe utilizzata da \texttt{AdjacentMatrix} esclusivamente per restituire un lato del grafo in modo random;
-	\item \texttt{Graph}: classe che contiene solo un campo \texttt{Adjacentmatrix} e che si occupa di effettuare la ''contrazione'' di un lato ad ogni iterazione di \texttt{full\_contraction}.
+	\item \texttt{Graph}: classe che contiene solo un campo \texttt{Adjacentmatrix} e che si occupa di effettuare la "contrazione" di un lato ad ogni iterazione di \texttt{full\_contraction}.
 \end{itemize} 
 
 \subsection{Algoritmi}
-Il package \texttt{lab3.algorithm} contiene un'unica classe, \texttt{MinCut}, che permette di risolvere il problema minCut utilizzando l'algoritmo \texttt{Karger}.
+Il package \texttt{lab3.algorithm} contiene un'unica classe, \texttt{MinCut}, che permette di risolvere il problema mincut utilizzando l'algoritmo \texttt{Karger}.
 \begin{itemize}
 	\item \texttt{Karger}: l'algoritmo ha una struttura identica a quella dello pseudocodice visto a lezione per l'algoritmo di Karger. Questo algoritmo chiama la funzione \texttt{full\_contraction} e possiede una complessità di \comp{n^4\log n}. Molto simile a \texttt{Karger} è \texttt{Karger\_discovery\_time}, utilizzata per calcolare quanto tempo ci mette l'algoritmo di Karger a trovare la soluzione esatta;
 	\item \texttt{full\_contraction}: anch'essa identica allo pseudocodice visto a lezione, esegue $n-2$ contrazioni del grafo. Come per \texttt{Karger}, è presente la funzione \texttt{full\_contraction\_time} che calcola il tempo di esecuzione di \texttt{full\_contraction}.
 \end{itemize}
 
 \subsection{Main}
+
 Il package \texttt{lab3.main} contiene la classe \texttt{Main}, responsabile dell'esecuzione degli algoritmi. All'interno vi sono due funzioni:
+
 \begin{itemize}
 	\item \texttt{Main}: si occupa di eseguire il calcolo dell'algoritmo di Karger, calcolare il tempo di esecuzione del \textit{Discovery Time} e della prima iterata di \texttt{full\_contraction}. Infine chiama la funzione \texttt{write\_results} per calcolare l'errore relativo tra la soluzione trovata da \texttt{karger} e la soluzione corretta ed infine scrivere tutti i risultati all'interno di \texttt{mincut.txt};
 	\item \texttt{write\_results}: si occupa di annotare in un file \texttt{.txt} i risultati e le tempistiche ottenuti dagli algoritmi sviluppati per questo laboratorio.

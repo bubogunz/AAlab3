@@ -171,6 +171,7 @@ Misurate i tempi di calcolo dell'algoritmo di Karger sui grafi del dataset, usan
 	\label{k-confronto}
 \end{figure}
 
+<<<<<<< HEAD
 La procedura \texttt{Karger} ha una complessità di\comp{n^4 \log n}, infatti è possibile vedere in Figura 4 come rispetto a Figura 3\footnote{che si riferisce ad una curva asintotica di \comp{n^2}} la curva inizia ad impennarsi fin da subito ma in modo più ripido.
 
 \begin{figure}[H]
@@ -182,7 +183,8 @@ La procedura \texttt{Karger} ha una complessità di\comp{n^4 \log n}, infatti è
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{avg_time_125-200}
+	\includegraphics[width=\textwidth]{avg_time_125-200}
+>>>>>>> 6cfb546b2e337a57112695a17de40ef0dfbf6197
 	\caption{Analisi asintotica di \texttt{Karger} per i grafi da 125 a 200 nodi}
 	\label{k-confronto2}
 \end{figure}
@@ -261,7 +263,9 @@ Misurate il \textit{discovery time} dell'algoritmo di Karger sui grafi del datas
 
 Dato che l'algoritmo di Karger è un algoritmo randomizzato, non è possibile determinare quando e se otterrà la soluzione corretta, dunque è normale che in Figura~\ref{dt-confronto} l'andamento non sia regolare.\\
 \'E importante invece notare come il \textit{discovery\_time} sia in generale almeno 10 volte minore del tempo di esecuzione di \texttt{Kager}, questo vuol dire che la soluzione corretta viene trovata già prima delle $\frac{k}{10}$ iterazioni, con $k = n^2 \log n$. Da ciò si può dedurre che già dopo $\frac{k}{10}$ iterazioni la probabilità di trovare la soluzione corretta è già molto alta.\\
-In particolare è interessante vedere in Figura~\ref{dt-confronto1}, Figura~\ref{dt-confronto2}, Figura~\ref{dt-confronto3} e Figura~\ref{dt-confronto4} la differenza tra \textit{discovery\_time} ed il tempo di esecuzione di \texttt{Karger} e di come il \textit{discovery\_time} sembri quasi lineare, rispetto a \texttt{Karger} che invece è esponenziale.
+
+In particolare è interessante vedere in Figura~\ref{dt-confronto1}, Figura~\ref{dt-confronto2}, Figura~\ref{dt-confronto3} e Figura~\ref{dt-confronto4} la differenza tra \textit{discovery\_time} ed il tempo di esecuzione di \texttt{Karger} e di come il \textit{discovery\_time} sembri quasi lineare, rispetto a \texttt{Karger}, che invece è esponenziale.
+>>>>>>> 6cfb546b2e337a57112695a17de40ef0dfbf6197
 
 \begin{figure}[H]
 	\centering
@@ -355,9 +359,11 @@ Per ognuno dei grafi del dataset, riportate il risultato risultato ottenuto dall
 	\end{longtable}
 \end{center}\vspace{-40pt}
 
-Abbiamo deciso di eseguire l'algoritmo di Karger senza alcun tipo di timeout, dato che coi grafi più grandi richiedeva neanche 15 minuti di tempo, e per tutti i grafi la soluzione corretta è stata trovata, avendo dunque un errore relativo sempre dello 0\%.
+Abbiamo deciso di eseguire l'algoritmo di Karger senza alcun tipo di timeout, dato che coi grafi più grandi richiedeva neanche 15 minuti di tempo perché terminasse, e per tutti i grafi la soluzione corretta è stata trovata, avendo dunque un errore relativo sempre dello 0\%.
 
 \section{Conclusioni}
+
 Nella realizzazione dell'elaborato abbiamo riscontrato qualche difficoltà nel cercare di capire quale fosse il modello per rappresentare i grafi più efficiente per eseguire l'algoritmo di Karger, in particolar modo per quanto riguardava la fase di contrazione dei lati, dato che quest'ultima doveva essere \comp{n}. Abbiamo dunque deciso di creare un modello che occupasse più memoria, attraverso le matrici di adiacenza, in favore di una complessità migliore.\\
 \'E stato inoltre interessante vedere come la soluzione ottima venisse trovata quasi sempre tra le prime $\frac{k}{10}$ iterazioni circa.\\
 Ci riteniamo soddisfatti del lavoro svolto, poiché siamo riusciti ad evitare l'uso di un \textit{timeout}: questo ci fa capire che siamo riusciti a rispettare la complessità, trovando nel 100\% dei dataset forniti la soluzione aspettata in tempi relativamente brevi, all'incirca 12 minuti per i grafi più grandi da 200 nodi.
+
